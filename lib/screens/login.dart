@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restaurant_ui_kit/screens/main_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'register.dart';
 
 
 
@@ -10,9 +12,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-  final TextEditingController _usernameControl = new TextEditingController();
-  final TextEditingController _passwordControl = new TextEditingController();
+  final TextEditingController _emailController = new TextEditingController();
+//  final TextEditingController _usernameController = new TextEditingController();
+  final TextEditingController _passwordController = new TextEditingController();
 
 
   @override
@@ -65,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderSide: BorderSide(color: Colors.white,),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "Username",
+                  hintText: "Email",
                   hintStyle: TextStyle(
                     fontSize: 15.0,
                     color: Colors.black,
@@ -76,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 maxLines: 1,
-                controller: _usernameControl,
+                controller: _emailController,
               ),
             ),
           ),
@@ -119,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 obscureText: true,
                 maxLines: 1,
-                controller: _passwordControl,
+                controller: _passwordController,
               ),
             ),
           ),
@@ -152,14 +154,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.white,
                 ),
               ),
-              onPressed: (){
-                Navigator.of(context).push(
+              onPressed: ()
+                async {
+                  try {
+                    FirebaseUser user =
+                    (await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: _emailController.text,
+                        password: _passwordController.text,
+                    )).user;
+                if (user != null) {
+                  Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context){
                       return MainScreen();
                     },
                   ),
                 );
+                }
+                } catch (e) {
+                print(e);
+                _emailController.text = "";
+                _passwordController.text = "";
+                // TODO: AlertDialog with error
+                    alertDialog(context);
+                }
+
+
               },
               color: Theme.of(context).accentColor,
             ),
@@ -215,4 +235,35 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+alertDialog(BuildContext context) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("Retry"),
+    onPressed: () {
+      Navigator.of(context).pop();
+//      Navigator.of(context).push(
+//        MaterialPageRoute(
+//          builder: (BuildContext context){
+//            return RegisterScreen();
+//          },
+//        ),
+//      );
+      },
+  );
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Error"),
+        content: Text("Invalid Login Please Register!!"),
+        actions: [
+          ok,
+        ],
+        elevation: 5,
+
+      );
+    },
+  );
 }
