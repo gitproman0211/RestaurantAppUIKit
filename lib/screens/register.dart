@@ -179,17 +179,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                      .createUserWithEmailAndPassword(
                                   email: _emailController.text,
                                   password: _passwordController.text,)).user;
-                                  if(user != null){
-                                     UserUpdateInfo updateUser = UserUpdateInfo();
-                                     user.updateProfile(updateUser);
-                                     Navigator.of(context).push(
-                                     MaterialPageRoute(
-                                       builder: (BuildContext context){
-                                           return MainScreen();
-                                                                    },
-                                                     ),
-                                                               );
-                                      }
+                                 if( user.isEmailVerified == false){
+                                   await user.sendEmailVerification();
+                                   alertDialogCheckEmail(context);
+                                 }
                                } catch(signUpError) {
                                  if(signUpError is PlatformException) {
                                    if(signUpError.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
@@ -343,6 +336,30 @@ alertDialogInvalidEmail(BuildContext context) {
       return AlertDialog(
         title: Text("Invalid Email "),
         content: Text("Email Address is badly formatted"),
+        actions: [
+          ok,
+        ],
+        elevation: 5,
+
+      );
+    },
+  );
+}
+alertDialogCheckEmail(BuildContext context) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Verification Email Sent "),
+        content: Text("Please check your Email to verify your Account"),
         actions: [
           ok,
         ],
