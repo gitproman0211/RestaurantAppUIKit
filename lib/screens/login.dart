@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restaurant_ui_kit/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -171,13 +172,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 );
                 }
-                } catch (e) {
-                print(e);
-                _emailController.text = "";
-                _passwordController.text = "";
-                // TODO: AlertDialog with error
-                    alertDialog(context);
-                }
+                } catch(signInError) {
+                    if(signInError is PlatformException) {
+                      if(signInError.code == 'ERROR_INVALID_EMAIL') {
+                        alertDialogUserDoesNotExist(context);
+                      }
+                      else if(signInError.code == 'ERROR_WRONG_PASSWORD') {
+                        alertDialogWrongPassword(context);
+                      }
+                    }
+                  }
 
 
               },
@@ -236,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-alertDialog(BuildContext context) {
+alertDialogUserDoesNotExist(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
     child: Text("Retry"),
@@ -262,7 +266,36 @@ alertDialog(BuildContext context) {
           ok,
         ],
         elevation: 5,
-
+      );
+    },
+  );
+}
+alertDialogWrongPassword(BuildContext context) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("Retry"),
+    onPressed: () {
+      Navigator.of(context).pop();
+//      Navigator.of(context).push(
+//        MaterialPageRoute(
+//          builder: (BuildContext context){
+//            return RegisterScreen();
+//          },
+//        ),
+//      );
+    },
+  );
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Error"),
+        content: Text("Incorrect Password"),
+        actions: [
+          ok,
+        ],
+        elevation: 5,
       );
     },
   );

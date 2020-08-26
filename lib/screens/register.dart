@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restaurant_ui_kit/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +11,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-// final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
  final TextEditingController _repasswordController = new TextEditingController();
@@ -21,7 +21,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: ListView(
         shrinkWrap: true,
         children: <Widget>[
-
           SizedBox(height: 10.0),
           Container(
             alignment: Alignment.center,
@@ -37,51 +36,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-
           SizedBox(height: 30.0),
-
-//          Card(
-//            elevation: 3.0,
-//            child: Container(
-//              decoration: BoxDecoration(
-//                color: Colors.white,
-//                borderRadius: BorderRadius.all(
-//                  Radius.circular(5.0),
-//                ),
-//              ),
-//              child: TextField(
-//                style: TextStyle(
-//                  fontSize: 15.0,
-//                  color: Colors.black,
-//                ),
-//                decoration: InputDecoration(
-//                  contentPadding: EdgeInsets.all(10.0),
-//                  border: OutlineInputBorder(
-//                    borderRadius: BorderRadius.circular(5.0),
-//                    borderSide: BorderSide(color: Colors.white,),
-//                  ),
-//                  enabledBorder: OutlineInputBorder(
-//                    borderSide: BorderSide(color: Colors.white,),
-//                    borderRadius: BorderRadius.circular(5.0),
-//                  ),
-//                  hintText: "Username",
-//                  prefixIcon: Icon(
-//                    Icons.perm_identity,
-//                    color: Colors.black,
-//                  ),
-//                  hintStyle: TextStyle(
-//                    fontSize: 15.0,
-//                    color: Colors.black,
-//                  ),
-//                ),
-//                maxLines: 1,
-//                controller: _usernameController,
-//              ),
-//            ),
-//          ),
-
           SizedBox(height: 10.0),
-
           Card(
             elevation: 3.0,
             child: Container(
@@ -164,9 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-
-
-          SizedBox(height: 40.0),
+          SizedBox(height: 10.0),
           Card(
             elevation: 3.0,
             child: Container(
@@ -217,44 +171,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               onPressed: () async{
-    if(_passwordController.text!=_repasswordController.text)
-      alertDialog(context);
-    else{
-    try {
-    FirebaseUser user = (await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-    email: _emailController.text,
-    password: _passwordController.text,)).user;
-    if(user != null){
-    UserUpdateInfo updateUser = UserUpdateInfo();
-//                updateUser.displayName = _usernameController.text;
-    user.updateProfile(updateUser);
-    Navigator.of(context).push(
-    MaterialPageRoute(
-    builder: (BuildContext context){
-    return MainScreen();
-    },
-    ),
-    );
-    }
-    } catch (e) {
-    print(e);
-//                _usernameController.text = "";
-    _passwordController.text = "";
-    _repasswordController.text = "";
-    _emailController.text = "";
-    }
-    }
+                             if(_passwordController.text!=_repasswordController.text)
+                                alertDialogPasswordsDontMatch(context);
+                              else{
+                               try {
+                                 FirebaseUser user = (await FirebaseAuth.instance
+                                     .createUserWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,)).user;
+                                  if(user != null){
+                                     UserUpdateInfo updateUser = UserUpdateInfo();
+                                     user.updateProfile(updateUser);
+                                     Navigator.of(context).push(
+                                     MaterialPageRoute(
+                                       builder: (BuildContext context){
+                                           return MainScreen();
+                                                                    },
+                                                     ),
+                                                               );
+                                      }
+                               } catch(signUpError) {
+                                 if(signUpError is PlatformException) {
+                                   if(signUpError.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+                                     alertDialogUserAlreadyExists(context);
+                                   }
+                                   else if(signUpError.code == 'ERROR_WEAK_PASSWORD') {
+                                     alertDialogWeakPassword(context);
+                                   }
+                                   else if(signUpError.code == 'ERROR_INVALID_EMAIL') {
+                                     alertDialogInvalidEmail(context);
+                                   }
+                                 }
+                               }
+                              }
                 },
               color: Theme.of(context).accentColor,
             ),
           ),
-
           SizedBox(height: 10.0),
           Divider(color: Theme.of(context).accentColor,),
           SizedBox(height: 10.0),
-
-
           Center(
             child: Container(
               width: MediaQuery.of(context).size.width/2,
@@ -270,11 +226,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Icon(
                         FontAwesomeIcons.facebookF,
                         color: Colors.white,
-//              size: 24.0,
+                      //              size: 24.0,
                       ),
                     ),
                   ),
-
                   RawMaterialButton(
                     onPressed: (){},
                     fillColor: Colors.white,
@@ -302,11 +257,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
-alertDialog(BuildContext context) {
+alertDialogPasswordsDontMatch(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
     child: Text("Retry"),
-    onPressed: () {Navigator.of(context).pop();},
+    onPressed: () {
+      Navigator.of(context).pop();
+      },
   );
   // show the alert dialog
   showDialog(
@@ -315,6 +272,77 @@ alertDialog(BuildContext context) {
       return AlertDialog(
         title: Text("Error"),
         content: Text("Passwords Don't Match"),
+        actions: [
+          ok,
+        ],
+        elevation: 5,
+      );
+    },
+  );
+}
+alertDialogUserAlreadyExists(BuildContext context) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("Login"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("User Already Exists"),
+        content: Text("Please Login"),
+        actions: [
+          ok,
+        ],
+        elevation: 5,
+
+      );
+    },
+  );
+}
+alertDialogWeakPassword(BuildContext context) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("Retry"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Weak Password"),
+        content: Text("Password Length should be Minimum 6 characters"),
+        actions: [
+          ok,
+        ],
+        elevation: 5,
+
+      );
+    },
+  );
+}
+alertDialogInvalidEmail(BuildContext context) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("Retry"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Invalid Email "),
+        content: Text("Email Address is badly formatted"),
         actions: [
           ok,
         ],
