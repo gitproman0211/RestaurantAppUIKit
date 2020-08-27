@@ -25,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
       child: ListView(
         shrinkWrap: true,
         children: <Widget>[
-
           SizedBox(height: 10.0),
           Container(
             alignment: Alignment.center,
@@ -43,7 +42,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
 
           SizedBox(height: 30.0),
-
           Card(
             elevation: 3.0,
             child: Container(
@@ -158,33 +156,36 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: ()
                 async {
                   try {
-                    FirebaseUser user =
-                    (await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: _emailController.text,
+                    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: _emailController.text,
                         password: _passwordController.text,
-                    )).user;
-                if (user != null) {
-                  Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context){
-                      return MainScreen();
-                    },
-                  ),
-                );
-                }
-                } catch(signInError) {
-                    if(signInError is PlatformException) {
-                      if(signInError.code == 'ERROR_INVALID_EMAIL') {
-                        alertDialogUserDoesNotExist(context);
+                    );
+                    FirebaseAuth.instance
+                        .authStateChanges()
+                        .listen((User user) {
+                      if (user == null) {
+                        print('User is currently signed out!');
+                      } else {
+                        print('User is signed in!');
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context){
+                              return MainScreen();
+                            },
+                          ),
+                        );
                       }
-                      else if(signInError.code == 'ERROR_WRONG_PASSWORD') {
-                        alertDialogWrongPassword(context);
-                      }
+                    });
+                } on FirebaseAuthException catch (e) {
+                    if (e.code == 'user-not-found') {
+                      print('No user found for that email.');
+                      alertDialogUserDoesNotExist(context);
+                    } else if (e.code == 'wrong-password') {
+                      print('Wrong password provided for that user.');
+                      alertDialogWrongPassword(context);
                     }
                   }
-
-
-              },
+                  },
               color: Theme.of(context).accentColor,
             ),
           ),
@@ -192,8 +193,6 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(height: 10.0),
           Divider(color: Theme.of(context).accentColor,),
           SizedBox(height: 10.0),
-
-
           Center(
             child: Container(
               width: MediaQuery.of(context).size.width/2,
@@ -246,13 +245,6 @@ alertDialogUserDoesNotExist(BuildContext context) {
     child: Text("Retry"),
     onPressed: () {
       Navigator.of(context).pop();
-//      Navigator.of(context).push(
-//        MaterialPageRoute(
-//          builder: (BuildContext context){
-//            return RegisterScreen();
-//          },
-//        ),
-//      );
       },
   );
   // show the alert dialog
@@ -276,14 +268,7 @@ alertDialogWrongPassword(BuildContext context) {
     child: Text("Retry"),
     onPressed: () {
       Navigator.of(context).pop();
-//      Navigator.of(context).push(
-//        MaterialPageRoute(
-//          builder: (BuildContext context){
-//            return RegisterScreen();
-//          },
-//        ),
-//      );
-    },
+      },
   );
   // show the alert dialog
   showDialog(

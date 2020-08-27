@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restaurant_ui_kit/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -11,13 +11,19 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController _firstNameController =
+      new TextEditingController();
+  final TextEditingController _lastNameController = new TextEditingController();
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
- final TextEditingController _repasswordController = new TextEditingController();
+  final TextEditingController _repasswordController =
+      new TextEditingController();
+  final firestoreInstance = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20.0,0,20,0),
+      padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
       child: ListView(
         shrinkWrap: true,
         children: <Widget>[
@@ -56,13 +62,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   contentPadding: EdgeInsets.all(10.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(color: Colors.white,),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white,),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "Email",
+                  hintText: "First Name",
                   prefixIcon: Icon(
                     Icons.mail_outline,
                     color: Colors.black,
@@ -73,13 +83,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 maxLines: 1,
-                controller: _emailController,
+                controller: _firstNameController,
               ),
             ),
           ),
-
           SizedBox(height: 10.0),
-
           Card(
             elevation: 3.0,
             child: Container(
@@ -98,10 +106,102 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   contentPadding: EdgeInsets.all(10.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(color: Colors.white,),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white,),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  hintText: "Last Name",
+                  prefixIcon: Icon(
+                    Icons.mail_outline,
+                    color: Colors.black,
+                  ),
+                  hintStyle: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  ),
+                ),
+                maxLines: 1,
+                controller: _lastNameController,
+              ),
+            ),
+          ),
+          SizedBox(height: 10.0),
+          Card(
+            elevation: 3.0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+              ),
+              child: TextField(
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(10.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  hintText: "Email",
+                  prefixIcon: Icon(
+                    Icons.mail_outline,
+                    color: Colors.black,
+                  ),
+                  hintStyle: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  ),
+                ),
+                maxLines: 1,
+                controller: _emailController,
+              ),
+            ),
+          ),
+          SizedBox(height: 10.0),
+          Card(
+            elevation: 3.0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+              ),
+              child: TextField(
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(10.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   hintText: "Password",
@@ -139,10 +239,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   contentPadding: EdgeInsets.all(10.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(color: Colors.white,),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white,),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   hintText: "Re-Enter Password",
@@ -170,47 +274,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () async{
-                             if(_passwordController.text!=_repasswordController.text)
-                                alertDialogPasswordsDontMatch(context);
-                              else{
-                               try {
-                                 FirebaseUser user = (await FirebaseAuth.instance
-                                     .createUserWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text,)).user;
-                                 if( user.isEmailVerified == false){
-                                   await user.sendEmailVerification();
-                                   alertDialogCheckEmail(context);
-                                 }
-                               } catch(signUpError) {
-                                 if(signUpError is PlatformException) {
-                                   if(signUpError.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
-                                     alertDialogUserAlreadyExists(context);
-                                   }
-                                   else if(signUpError.code == 'ERROR_WEAK_PASSWORD') {
-                                     alertDialogWeakPassword(context);
-                                   }
-                                   else if(signUpError.code == 'ERROR_INVALID_EMAIL') {
-                                     alertDialogInvalidEmail(context);
-                                   }
-                                 }
-                               }
-                              }
-                },
+              onPressed: () async {
+                if (_passwordController.text != _repasswordController.text)
+                  alertDialogPasswordsDontMatch(context);
+                else {
+                  try {
+                    UserCredential userCredential = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+                    User user = FirebaseAuth.instance.currentUser;
+                    if (!user.emailVerified) {
+                      await user.sendEmailVerification();
+                      alertDialogCheckEmail(context);
+                    }
+                    firestoreInstance
+                        .collection("users")
+                        .doc(user.uid)
+                        .set({
+                      "firstName": _firstNameController.text,
+                      "lastName": _lastNameController.text,
+                      "email": _emailController.text,
+                      "address": "",
+                      "phoneNumber": "",
+                    }).then((value) {
+                      print("Success");
+                    });
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'weak-password') {
+                      print('The password provided is too weak.');
+                      alertDialogWeakPassword(context);
+                    } else if (e.code == 'email-already-in-use') {
+                      print('The account already exists for that email.');
+                      alertDialogUserAlreadyExists(context);
+                    }
+                  } catch (e) {
+                    print(e.toString());
+                  }
+                }
+              },
               color: Theme.of(context).accentColor,
             ),
           ),
           SizedBox(height: 10.0),
-          Divider(color: Theme.of(context).accentColor,),
+          Divider(
+            color: Theme.of(context).accentColor,
+          ),
           SizedBox(height: 10.0),
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width/2,
+              width: MediaQuery.of(context).size.width / 2,
               child: Row(
                 children: <Widget>[
                   RawMaterialButton(
-                    onPressed: (){},
+                    onPressed: () {},
                     fillColor: Colors.blue[800],
                     shape: CircleBorder(),
                     elevation: 4.0,
@@ -219,12 +337,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Icon(
                         FontAwesomeIcons.facebookF,
                         color: Colors.white,
-                      //              size: 24.0,
+                        //              size: 24.0,
                       ),
                     ),
                   ),
                   RawMaterialButton(
-                    onPressed: (){},
+                    onPressed: () {},
                     fillColor: Colors.white,
                     shape: CircleBorder(),
                     elevation: 4.0,
@@ -241,22 +359,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-
           SizedBox(height: 20.0),
-
-
         ],
       ),
     );
   }
 }
+
 alertDialogPasswordsDontMatch(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
     child: Text("Retry"),
     onPressed: () {
       Navigator.of(context).pop();
-      },
+    },
   );
   // show the alert dialog
   showDialog(
@@ -273,6 +389,7 @@ alertDialogPasswordsDontMatch(BuildContext context) {
     },
   );
 }
+
 alertDialogUserAlreadyExists(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
@@ -292,11 +409,11 @@ alertDialogUserAlreadyExists(BuildContext context) {
           ok,
         ],
         elevation: 5,
-
       );
     },
   );
 }
+
 alertDialogWeakPassword(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
@@ -316,11 +433,11 @@ alertDialogWeakPassword(BuildContext context) {
           ok,
         ],
         elevation: 5,
-
       );
     },
   );
 }
+
 alertDialogInvalidEmail(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
@@ -340,11 +457,11 @@ alertDialogInvalidEmail(BuildContext context) {
           ok,
         ],
         elevation: 5,
-
       );
     },
   );
 }
+
 alertDialogCheckEmail(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
@@ -364,7 +481,6 @@ alertDialogCheckEmail(BuildContext context) {
           ok,
         ],
         elevation: 5,
-
       );
     },
   );
