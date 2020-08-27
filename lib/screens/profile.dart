@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/providers/app_provider.dart';
 import 'package:restaurant_ui_kit/screens/splash.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -10,7 +13,34 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String email="";
+  String firstName="";
+  String lastName="";
+  String phoneNumber="";
+  String address="";
+  User user = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getEmail();
+
+
+  }
+  getEmail()async {
+    DocumentSnapshot doc= await firestoreInstance.collection("users")
+        .doc(user.uid).get();
+    email=doc.data()["email"];
+    firstName=doc.data()["firstName"];
+    lastName=doc.data()["lastName"];
+    phoneNumber=doc.data()["phoneNumber"];
+    address=doc.data()["address"];
+    setState(() {
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +70,7 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Jane Doe",
+                            firstName+" "+lastName,
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -55,7 +85,7 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "jane@doefamily.com",
+                            email,
                             style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.bold,
@@ -113,15 +143,14 @@ class _ProfileState extends State<Profile> {
 
             ListTile(
               title: Text(
-                "Full Name",
+                "First Name",
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-
               subtitle: Text(
-                "Jane Mary Doe",
+                firstName,
               ),
 
               trailing: IconButton(
@@ -130,11 +159,37 @@ class _ProfileState extends State<Profile> {
                   size: 20.0,
                 ),
                 onPressed: (){
+                  alertDialogEditFirstName(context);
+//                  setState(() {
+//
+//                  });
+                  },
+                tooltip: "Edit",
+              ),
+            ),
+            ListTile(
+              title: Text(
+                "Last Name",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              subtitle: Text(
+                lastName,
+              ),
+
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  size: 20.0,
+                ),
+                onPressed: (){
+                  alertDialogEditLastName(context);
                 },
                 tooltip: "Edit",
               ),
             ),
-
             ListTile(
               title: Text(
                 "Email",
@@ -145,7 +200,7 @@ class _ProfileState extends State<Profile> {
               ),
 
               subtitle: Text(
-                "jane@doefamily.com",
+                email,
               ),
             ),
 
@@ -159,7 +214,18 @@ class _ProfileState extends State<Profile> {
               ),
 
               subtitle: Text(
-                "+1 816-926-6241",
+                phoneNumber,
+              ),
+
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  size: 20.0,
+                ),
+                onPressed: (){
+                  alertDialogEditPhoneNumber(context);
+                },
+                tooltip: "Edit",
               ),
             ),
 
@@ -173,37 +239,47 @@ class _ProfileState extends State<Profile> {
               ),
 
               subtitle: Text(
-                "1278 Loving Acres RoadKansas City, MO 64110",
+                address,
               ),
-            ),
-
-            ListTile(
-              title: Text(
-                "Gender",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  size: 20.0,
                 ),
-              ),
-
-              subtitle: Text(
-                "Female",
-              ),
-            ),
-
-            ListTile(
-              title: Text(
-                "Date of Birth",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-
-              subtitle: Text(
-                "April 9, 1995",
+                onPressed: (){
+                  alertDialogEditAddress(context);
+                },
+                tooltip: "Edit",
               ),
             ),
+
+//            ListTile(
+//              title: Text(
+//                "Gender",
+//                style: TextStyle(
+//                  fontSize: 17,
+//                  fontWeight: FontWeight.w700,
+//                ),
+//              ),
+//
+//              subtitle: Text(
+//                "Female",
+//              ),
+//            ),
+//
+//            ListTile(
+//              title: Text(
+//                "Date of Birth",
+//                style: TextStyle(
+//                  fontSize: 17,
+//                  fontWeight: FontWeight.w700,
+//                ),
+//              ),
+//
+//              subtitle: Text(
+//                "April 9, 1995",
+//              ),
+//            ),
 
              MediaQuery.of(context).platformBrightness == Brightness.dark
                  ? SizedBox()
@@ -237,4 +313,149 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+}
+alertDialogEditFirstName(BuildContext context) async {
+  TextEditingController _textFieldController = TextEditingController();
+  User user = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit First Name'),
+          content: TextField(
+            controller: _textFieldController,
+            textInputAction: TextInputAction.go,
+            keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(hintText: "Enter New First Name"),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Submit'),
+              onPressed: () {
+                firestoreInstance
+                    .collection("users")
+                    .doc(user.uid)
+                    .update({
+                  "firstName": _textFieldController.text,
+                }).then((value) {
+                  print("Success");
+                });
+                Navigator.of(context).pop();
+
+              },
+            )
+          ],
+        );
+      });
+}
+alertDialogEditLastName(BuildContext context) async {
+  TextEditingController _textFieldController = TextEditingController();
+  User user = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Last Name'),
+          content: TextField(
+            controller: _textFieldController,
+            textInputAction: TextInputAction.go,
+            keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(hintText: "Enter New Last Name"),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Submit'),
+              onPressed: () {
+                firestoreInstance
+                    .collection("users")
+                    .doc(user.uid)
+                    .update({
+                  "lastName": _textFieldController.text,
+                }).then((value) {
+                  print("Success");
+                });
+                Navigator.of(context).pop();
+
+              },
+            )
+          ],
+        );
+      });
+}
+alertDialogEditPhoneNumber(BuildContext context) async {
+  TextEditingController _textFieldController = TextEditingController();
+  User user = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Phone Number'),
+          content: TextField(
+            controller: _textFieldController,
+            textInputAction: TextInputAction.go,
+            keyboardType: TextInputType.number,
+
+            decoration: InputDecoration(hintText: "Enter New Phone Number"),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Submit'),
+              onPressed: () {
+                firestoreInstance
+                    .collection("users")
+                    .doc(user.uid)
+                    .update({
+                  "phoneNumber": _textFieldController.text,
+                }).then((value) {
+                  print("Success");
+                });
+                Navigator.of(context).pop();
+
+              },
+            )
+          ],
+        );
+      });
+}
+alertDialogEditAddress(BuildContext context) async {
+  TextEditingController _textFieldController = TextEditingController();
+  User user = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Address'),
+          content: TextField(
+            maxLines: 3,
+            controller: _textFieldController,
+            textInputAction: TextInputAction.go,
+            keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(hintText: "Enter New Address"),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Submit'),
+              onPressed: () {
+                firestoreInstance
+                    .collection("users")
+                    .doc(user.uid)
+                    .update({
+                  "address": _textFieldController.text,
+                }).then((value) {
+                  print("Success");
+                });
+                Navigator.of(context).pop();
+
+              },
+            )
+          ],
+        );
+      });
 }
