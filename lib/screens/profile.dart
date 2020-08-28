@@ -158,11 +158,11 @@ class _ProfileState extends State<Profile> {
                   Icons.edit,
                   size: 20.0,
                 ),
-                onPressed: (){
-                  alertDialogEditFirstName(context);
-//                  setState(() {
-//
-//                  });
+                onPressed: ()async {
+                  await alertDialogEditFirstName(context);
+                  setState(() {
+
+                  });
                   },
                 tooltip: "Edit",
               ),
@@ -313,149 +313,180 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-}
-alertDialogEditFirstName(BuildContext context) async {
-  TextEditingController _textFieldController = TextEditingController();
-  User user = FirebaseAuth.instance.currentUser;
-  final firestoreInstance = FirebaseFirestore.instance;
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Edit First Name'),
-          content: TextField(
-            controller: _textFieldController,
-            textInputAction: TextInputAction.go,
-            keyboardType: TextInputType.text,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(hintText: "Enter New First Name"),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text('Submit'),
-              onPressed: () {
-                firestoreInstance
-                    .collection("users")
-                    .doc(user.uid)
-                    .update({
-                  "firstName": _textFieldController.text,
-                }).then((value) {
-                  print("Success");
-                });
-                Navigator.of(context).pop();
+  alertDialogEditFirstName(BuildContext context) async {
+    TextEditingController _textFieldController = TextEditingController();
+    User user = FirebaseAuth.instance.currentUser;
+    final firestoreInstance = FirebaseFirestore.instance;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Edit First Name'),
+            content: TextField(
+              controller: _textFieldController,
+              textInputAction: TextInputAction.go,
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(hintText: "Enter New First Name"),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  },
+              ),
+              new FlatButton(
+                child: new Text('Submit'),
+                onPressed: () {
+                  firestoreInstance
+                      .collection("users")
+                      .doc(user.uid)
+                      .update({
+                    "firstName": _textFieldController.text,
+                  }).then((value) {
+                    print("Success");
+                  });
+                 firstName=_textFieldController.text;
+                  Navigator.of(context).pop();
 
-              },
-            )
-          ],
-        );
-      });
-}
-alertDialogEditLastName(BuildContext context) async {
-  TextEditingController _textFieldController = TextEditingController();
-  User user = FirebaseAuth.instance.currentUser;
-  final firestoreInstance = FirebaseFirestore.instance;
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Edit Last Name'),
-          content: TextField(
-            controller: _textFieldController,
-            textInputAction: TextInputAction.go,
-            keyboardType: TextInputType.text,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(hintText: "Enter New Last Name"),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text('Submit'),
-              onPressed: () {
-                firestoreInstance
-                    .collection("users")
-                    .doc(user.uid)
-                    .update({
-                  "lastName": _textFieldController.text,
-                }).then((value) {
-                  print("Success");
-                });
-                Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+  alertDialogEditLastName(BuildContext context) async {
+    TextEditingController _textFieldController = TextEditingController();
+    User user = FirebaseAuth.instance.currentUser;
+    final firestoreInstance = FirebaseFirestore.instance;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Edit Last Name'),
+            content: TextField(
+              controller: _textFieldController,
+              textInputAction: TextInputAction.go,
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(hintText: "Enter New Last Name"),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('Submit'),
+                onPressed: () {
+                  firestoreInstance
+                      .collection("users")
+                      .doc(user.uid)
+                      .update({
+                    "lastName": _textFieldController.text,
+                  }).then((value) {
+                    print("Success");
+                  });
+                  lastName=_textFieldController.text;
+                  Navigator.of(context).pop();
 
-              },
-            )
-          ],
-        );
-      });
-}
-alertDialogEditPhoneNumber(BuildContext context) async {
-  TextEditingController _textFieldController = TextEditingController();
-  User user = FirebaseAuth.instance.currentUser;
-  final firestoreInstance = FirebaseFirestore.instance;
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Edit Phone Number'),
-          content: TextField(
-            controller: _textFieldController,
-            textInputAction: TextInputAction.go,
-            keyboardType: TextInputType.number,
+                },
+              )
+            ],
+          );
+        });
+  }
+  alertDialogEditPhoneNumber(BuildContext context) async {
+    TextEditingController _textFieldController = TextEditingController();
+    User user = FirebaseAuth.instance.currentUser;
+    final firestoreInstance = FirebaseFirestore.instance;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Edit Phone Number'),
+            content: TextField(
+              controller: _textFieldController,
+              textInputAction: TextInputAction.go,
+              keyboardType: TextInputType.number,
 
-            decoration: InputDecoration(hintText: "Enter New Phone Number"),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text('Submit'),
-              onPressed: () {
-                firestoreInstance
-                    .collection("users")
-                    .doc(user.uid)
-                    .update({
-                  "phoneNumber": _textFieldController.text,
-                }).then((value) {
-                  print("Success");
-                });
-                Navigator.of(context).pop();
+              decoration: InputDecoration(hintText: "Enter New Phone Number"),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('Submit'),
+                onPressed: () {
+                  firestoreInstance
+                      .collection("users")
+                      .doc(user.uid)
+                      .update({
+                    "phoneNumber": _textFieldController.text,
+                  }).then((value) {
+                    print("Success");
+                  });
+                  phoneNumber=_textFieldController.text;
+                  Navigator.of(context).pop();
 
-              },
-            )
-          ],
-        );
-      });
-}
-alertDialogEditAddress(BuildContext context) async {
-  TextEditingController _textFieldController = TextEditingController();
-  User user = FirebaseAuth.instance.currentUser;
-  final firestoreInstance = FirebaseFirestore.instance;
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Edit Address'),
-          content: TextField(
-            maxLines: 3,
-            controller: _textFieldController,
-            textInputAction: TextInputAction.go,
-            keyboardType: TextInputType.text,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(hintText: "Enter New Address"),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text('Submit'),
-              onPressed: () {
-                firestoreInstance
-                    .collection("users")
-                    .doc(user.uid)
-                    .update({
-                  "address": _textFieldController.text,
-                }).then((value) {
-                  print("Success");
-                });
-                Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+  alertDialogEditAddress(BuildContext context) async {
+    TextEditingController _textFieldController = TextEditingController();
+    User user = FirebaseAuth.instance.currentUser;
+    final firestoreInstance = FirebaseFirestore.instance;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Edit Address'),
+            content: TextField(
+              maxLines: 3,
+              controller: _textFieldController,
+              textInputAction: TextInputAction.go,
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(hintText: "Enter New Address"),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('Submit'),
+                onPressed: () {
+                  firestoreInstance
+                      .collection("users")
+                      .doc(user.uid)
+                      .update({
+                    "address": _textFieldController.text,
+                  }).then((value) {
+                    print("Success");
+                  });
+                  address=_textFieldController.text;
+                  Navigator.of(context).pop();
 
-              },
-            )
-          ],
-        );
-      });
+                },
+              )
+            ],
+          );
+        });
+  }
+
 }
+
+
