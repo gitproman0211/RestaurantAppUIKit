@@ -190,17 +190,23 @@ class _ProfileState extends State<Profile> {
                 tooltip: "Edit",
               ),
             ),
-            ListTile(
-              title: Text(
-                "Email",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                ),
+            Container(
+              decoration: new BoxDecoration (
+                  color: Colors.grey[100]
               ),
 
-              subtitle: Text(
-                email,
+              child: ListTile(
+                title: Text(
+                  "Email",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+
+                subtitle: Text(
+                  email,
+                ),
               ),
             ),
 
