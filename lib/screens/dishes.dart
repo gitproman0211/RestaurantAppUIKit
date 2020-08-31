@@ -6,11 +6,13 @@ import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 
 
 class DishesScreen extends StatefulWidget {
+  final List<Map> foods;
+  DishesScreen({Key key, @required this.foods}) : super(key: key);
   @override
   _DishesScreenState createState() => _DishesScreenState();
 }
-
 class _DishesScreenState extends State<DishesScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +51,6 @@ class _DishesScreenState extends State<DishesScreen> {
       body: Padding(
           padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
         child: ListView(
-
           children: <Widget>[
             Text(
               "Chinese",
@@ -60,7 +61,6 @@ class _DishesScreenState extends State<DishesScreen> {
               maxLines: 2,
             ),
             Divider(),
-
             GridView.builder(
               shrinkWrap: true,
               primary: false,

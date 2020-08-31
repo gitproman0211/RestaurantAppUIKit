@@ -3,9 +3,10 @@ import 'package:restaurant_ui_kit/screens/dishes.dart';
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 import 'package:restaurant_ui_kit/widgets/home_category.dart';
 import 'package:restaurant_ui_kit/widgets/slider_item.dart';
-import 'package:restaurant_ui_kit/util/foods.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:restaurant_ui_kit/util/categories.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class Home extends StatefulWidget {
@@ -14,6 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
+  final firestoreInstance = FirebaseFirestore.instance;
+  List<Map>foods=[];
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -23,7 +26,23 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
 
     return result;
   }
+  void getMenu(){
+    firestoreInstance.collection("menu").get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        print(result.data());
+        foods.add(result.data());
+      });
+    });
 
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMenu();
+
+
+  }
   int _current = 0;
 
 
@@ -60,7 +79,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context){
-                          return DishesScreen();
+                          return DishesScreen(foods:foods);
                         },
                       ),
                     );
@@ -72,15 +91,14 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
             SizedBox(height: 10.0),
 
             //Slider Here
-
-            CarouselSlider(
+              CarouselSlider(
               height: MediaQuery.of(context).size.height/2.4,
               items: map<Widget>(
                 foods,
                     (index, i){
                       Map food = foods[index];
                   return SliderItem(
-                    img: food['img'],
+                    img: food['image'],
                     isFav: false,
                     name: food['name'],
                     rating: 5.0,
