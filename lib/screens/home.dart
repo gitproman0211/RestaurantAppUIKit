@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
   final firestoreInstance = FirebaseFirestore.instance;
   List<Map>foods=[];
-
+  List<String> categories = [];
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {
@@ -25,22 +25,43 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
     }
     return result;
   }
-  void getMenu(){
+  getCategories(List<Map<dynamic, dynamic>> foods) {
+    List<String> categories = [];
+    for (var i = 0; i < foods.length; i++) {
+      foods[i].forEach((k, v) {
+        if (k == 'category') {
+          if (!categories.contains(v)) {
+            categories.add(v);
+          }
+        }
+      });
+    }
+    print("List of Categories:");
+    print(categories);
+    return categories;
+  }
+   getMenu(){
     firestoreInstance.collection("menu").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         print(result.data());
         foods.add(result.data());
       });
     });
+    categories = getCategories(foods);
     print(foods);
+    setState(() {
+
+    });
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getMenu();
+
   }
   int _current = 0;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -128,11 +149,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
                 shrinkWrap: true,
                 itemCount: categories == null?0:categories.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Map cat = categories[index];
+
                   return HomeCategory(
-                    icon: cat['icon'],
-                    title: cat['name'],
-                    items: cat['items'].toString(),
+
+                    title: categories[index],
+
                     isHome: true,
                   );
                 },
@@ -161,7 +182,15 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
                       color: Theme.of(context).accentColor,
                     ),
                   ),
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context){
+                          return DishesScreen(foods:foods);
+                        },
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -183,7 +212,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
 //                print(foods);
 //                print(foods.length);
                 return GridProduct(
-                  img: food['img'],
+                  img: food['image'],
                   isFav: false,
                   name: food['name'],
                   rating: 5.0,

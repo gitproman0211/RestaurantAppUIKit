@@ -13,21 +13,7 @@ class DishesScreen extends StatefulWidget {
   _DishesScreenState createState() => _DishesScreenState();
 }
 
-getCategories(List<Map<dynamic, dynamic>> foods) {
-  List<String> categories = [];
-  for (var i = 0; i < foods.length; i++) {
-    foods[i].forEach((k, v) {
-      if (k == 'category') {
-        if (!categories.contains(v)) {
-          categories.add(v);
-        }
-      }
-    });
-  }
-  print("List of Categories:");
-  print(categories);
-  return categories;
-}
+
 
 class _DishesScreenState extends State<DishesScreen> {
   List<String> categories = [];
@@ -37,7 +23,21 @@ class _DishesScreenState extends State<DishesScreen> {
     super.initState();
     categories = getCategories(widget.foods);
   }
-
+  getCategories(List<Map<dynamic, dynamic>> foods) {
+    List<String> categories = [];
+    for (var i = 0; i < foods.length; i++) {
+      foods[i].forEach((k, v) {
+        if (k == 'category') {
+          if (!categories.contains(v)) {
+            categories.add(v);
+          }
+        }
+      });
+    }
+    print("List of Categories:");
+    print(categories);
+    return categories;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -100,6 +100,7 @@ class _ProfileState extends State<Profile> {
                         children: <Widget>[
                           InkWell(
                             onTap: (){
+                              FirebaseAuth.instance.signOut();
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (BuildContext context){
