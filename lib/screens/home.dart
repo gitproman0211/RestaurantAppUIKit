@@ -23,7 +23,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
     for (var i = 0; i < list.length; i++) {
       result.add(handler(i, list[i]));
     }
-
     return result;
   }
   void getMenu(){
@@ -33,24 +32,19 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home>{
         foods.add(result.data());
       });
     });
-
+    print(foods);
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getMenu();
-
-
   }
   int _current = 0;
-
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
         child: ListView(
