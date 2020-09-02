@@ -41,14 +41,14 @@ class _HomeCategoryState extends State<HomeCategory> {
           padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
           child: Row(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 0.0, right: 10.0),
-                child: Icon(
-                  widget.icon,
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-              SizedBox(width: 5),
+//              Padding(
+//                padding: EdgeInsets.only(left: 0.0, right: 10.0),
+//                child: Icon(
+//                  widget.icon,
+//                  color: Theme.of(context).accentColor,
+//                ),
+//              ),
+//              SizedBox(width: 5),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,

@@ -27,7 +27,15 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
     }
     return result;
   }
-
+ int getNumberOfItems(String category){
+    int count=0;
+    for(var i=0;i<foods.length;i++){
+      if(foods[i]["category"]==category){
+        count++;
+      }
+    }
+    return count;
+  }
   getCategories(List<Map<dynamic, dynamic>> foods) {
     List<String> categories = [];
     for (var i = 0; i < foods.length; i++) {
@@ -51,12 +59,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
         foods.add(result.data());
       }
       );
+      categories = getCategories(foods);
+      print(foods);
+      isLoading = false;
+      setState(() {});
     }
     );
-    categories = getCategories(foods);
-    print(foods);
-    isLoading = false;
-    setState(() {});
   }
 
   @override
@@ -73,10 +81,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
     super.build(context);
     return Scaffold(
       body: isLoading
-          ? CircularProgressIndicator(
-              backgroundColor: Colors.cyan,
-              strokeWidth: 5,
-            )
+          ? Center(
+            child: CircularProgressIndicator(
+                backgroundColor: Colors.cyan,
+                strokeWidth: 5,
+              ),
+          )
           : Padding(
               padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
               child: ListView(
@@ -161,6 +171,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       itemBuilder: (BuildContext context, int index) {
                         return HomeCategory(
                           title: categories[index],
+                          items: getNumberOfItems(categories[index]).toString(),
                           isHome: true,
                         );
                       },
