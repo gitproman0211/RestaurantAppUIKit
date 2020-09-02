@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
-import 'package:restaurant_ui_kit/util/foods.dart';
+
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 
 class DishesScreen extends StatefulWidget {
   final List<Map> foods;
-
   DishesScreen({Key key, @required this.foods}) : super(key: key);
-
   @override
   _DishesScreenState createState() => _DishesScreenState();
 }
 
-
-
 class _DishesScreenState extends State<DishesScreen> {
   List<String> categories = [];
-
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -112,6 +107,7 @@ class _DishesScreenState extends State<DishesScreen> {
             Map food = temp[index];
             print(food);
             return GridProduct(
+              food:food,
               img: food['image'],
               isFav: false,
               name: food['name'],
