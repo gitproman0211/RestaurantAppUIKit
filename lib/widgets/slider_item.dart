@@ -4,7 +4,7 @@ import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:restaurant_ui_kit/widgets/smooth_star_rating.dart';
 
 class SliderItem extends StatelessWidget {
-
+  final Map food;
   final String name;
   final String img;
   final bool isFav;
@@ -14,6 +14,7 @@ class SliderItem extends StatelessWidget {
 
   SliderItem({
     Key key,
+    @required this.food,
     @required this.name,
     @required this.img,
     @required this.isFav,
@@ -109,7 +110,7 @@ class SliderItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context){
-              return ProductDetails();
+              return ProductDetails(foodItem: food);
             },
           ),
         );

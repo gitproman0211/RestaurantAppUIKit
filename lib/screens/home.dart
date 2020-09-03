@@ -134,6 +134,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       (index, i) {
                         Map food = foods[index];
                         return SliderItem(
+                          food:food,
                           img: food['image'],
                           isFav: false,
                           name: food['name'],

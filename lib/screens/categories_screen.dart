@@ -136,6 +136,7 @@ print("count=");
               itemBuilder: (BuildContext context, int index) {
                 Map food = cateogoryItems[index];
                 return GridProduct(
+                  food: food,
                   img: food['image'],
                   isFav: false,
                   name: food['name'],
