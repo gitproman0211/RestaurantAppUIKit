@@ -30,6 +30,7 @@ class _DishesScreenState extends State<DishesScreen> {
       });
     }
     print("List of Categories:");
+    categories.sort();
     print(categories);
     return categories;
   }

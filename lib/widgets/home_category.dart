@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/categories_screen.dart';
+import 'package:restaurant_ui_kit/screens/dishes.dart';
 
 
 class HomeCategory extends StatefulWidget {
-  final IconData icon;
+//  final IconData icon;
   final String title;
   final String items;
   final Function tap;
   final bool isHome;
+  final List<Map> foods;
+  final List<String> categories;
 
   HomeCategory({
     Key key,
-    @required this.icon,
+//    @required this.icon,
     @required this.title,
     @required this.items,
-    this.tap, this.isHome})
+    this.tap, this.isHome,
+  @required this.foods,
+  @required this.categories})
       : super(key: key);
 
   @override
@@ -25,15 +30,16 @@ class _HomeCategoryState extends State<HomeCategory> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.isHome?(){
+      onTap: (){
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context){
-              return CategoriesScreen();
+              return CategoriesScreen(foods: widget.foods,title: widget.title,categories: widget.categories,items: widget.items,);
             },
           ),
         );
-      }:widget.tap,
+      },
+
       child: Card(
         shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10.0)),
         elevation: 4.0,
@@ -63,7 +69,7 @@ class _HomeCategoryState extends State<HomeCategory> {
                   ),
 
                   Text(
-                    "${widget.items} Items",
+                    widget.items,
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 10,

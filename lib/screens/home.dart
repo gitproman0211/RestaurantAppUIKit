@@ -48,6 +48,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
       });
     }
     print("List of Categories:");
+    categories.sort();
     print(categories);
     return categories;
   }
@@ -152,7 +153,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                     },
                   ),
                   SizedBox(height: 20.0),
-
                   Text(
                     "Food Categories",
                     style: TextStyle(
@@ -161,7 +161,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                     ),
                   ),
                   SizedBox(height: 10.0),
-
                   Container(
                     height: 65.0,
                     child: ListView.builder(
@@ -170,7 +169,9 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       itemCount: categories == null ? 0 : categories.length,
                       itemBuilder: (BuildContext context, int index) {
                         return HomeCategory(
+                          foods:foods,
                           title: categories[index],
+                          categories:categories,
                           items: getNumberOfItems(categories[index]).toString(),
                           isHome: true,
                         );
@@ -179,7 +180,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                   ),
 
                   SizedBox(height: 20.0),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
