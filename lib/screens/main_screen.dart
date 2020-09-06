@@ -35,6 +35,18 @@ class _MainScreenState extends State<MainScreen> {
           actions: <Widget>[
             IconButton(
               icon: IconBadge(
+                icon: Icons.shopping_cart,
+                size: 24.0,
+              ),
+              color: _page == 3
+                  ? Theme.of(context).accentColor
+                  : Theme
+                  .of(context)
+                  .textTheme.caption.color,
+              onPressed: ()=>_pageController.jumpToPage(3),
+            ),
+            IconButton(
+              icon: IconBadge(
                 icon: Icons.notifications,
                 size: 22.0,
               ),

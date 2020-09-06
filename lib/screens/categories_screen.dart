@@ -28,6 +28,8 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   var cateogoryItems=[];
+  PageController _pageController;
+  int _page = 0;
   int getNumberOfItems(String category,List<Map>foods){
     int count=0;
     for(var i=0;i<foods.length;i++){
@@ -71,6 +73,18 @@ print("count=");
         ),
         elevation: 0.0,
         actions: <Widget>[
+          IconButton(
+            icon: IconBadge(
+              icon: Icons.shopping_cart,
+              size: 24.0,
+            ),
+            color: _page == 3
+                ? Theme.of(context).accentColor
+                : Theme
+                .of(context)
+                .textTheme.caption.color,
+            onPressed: ()=>_pageController.jumpToPage(3),
+          ),
           IconButton(
             icon: IconBadge(
               icon: Icons.notifications,

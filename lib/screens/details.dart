@@ -16,6 +16,8 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  PageController _pageController;
+  int _page = 0;
   bool isFav = false;
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,18 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
         elevation: 0.0,
         actions: <Widget>[
+          IconButton(
+            icon: IconBadge(
+              icon: Icons.shopping_cart,
+              size: 24.0,
+            ),
+            color: _page == 3
+                ? Theme.of(context).accentColor
+                : Theme
+                .of(context)
+                .textTheme.caption.color,
+            onPressed: ()=>_pageController.jumpToPage(3),
+          ),
           IconButton(
             icon: IconBadge(
               icon: Icons.notifications,
@@ -257,14 +271,17 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           color: Theme.of(context).accentColor,
           onPressed: (){
-            widget.cart.add(widget.foodItem);
-            Fluttertoast.showToast(msg: "Item Added To Cart");
+            if(widget.cart.contains(widget.foodItem)){
+              Fluttertoast.showToast(msg: "Item Already Present In Cart");
+            }
+            else{
+              widget.cart.add(widget.foodItem);
+              Fluttertoast.showToast(msg: "Item Added To Cart");
+            }
             setState(() {
 
             });
-
-
-          },
+            },
         ),
       ),
     );
