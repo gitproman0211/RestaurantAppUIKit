@@ -19,7 +19,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
   int _page = 0;
-
+  List <Map> cart=[];
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -57,10 +57,10 @@ class _MainScreenState extends State<MainScreen> {
           controller: _pageController,
           onPageChanged: onPageChanged,
           children: <Widget>[
-            Home(),
+            Home(cart: cart,),
             FavoriteScreen(),
             SearchScreen(),
-            CartScreen(),
+            CartScreen(cart: cart,),
             Profile(),
           ],
         ),

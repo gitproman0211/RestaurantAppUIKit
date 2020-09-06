@@ -10,6 +10,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
+  List<Map> cart;
+  Home({
+    Key key,
+    @required this.cart,
+
+  })
+      : super(key: key);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -115,7 +122,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (BuildContext context) {
-                                return DishesScreen(foods: foods);
+                                return DishesScreen(foods: foods,cart: widget.cart,);
                               },
                             ),
                           );
@@ -134,6 +141,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       (index, i) {
                         Map food = foods[index];
                         return SliderItem(
+                          cart:widget.cart,
                           food:food,
                           img: food['image'],
                           isFav: false,
@@ -170,6 +178,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       itemCount: categories == null ? 0 : categories.length,
                       itemBuilder: (BuildContext context, int index) {
                         return HomeCategory(
+                          cart:widget.cart,
                           foods:foods,
                           title: categories[index],
                           categories:categories,

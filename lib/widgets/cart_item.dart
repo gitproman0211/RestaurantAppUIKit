@@ -10,15 +10,19 @@ class CartItem extends StatelessWidget {
   final bool isFav;
   final double rating;
   final int raters;
-
-
+  final String price;
+  final Map foodItem;
+  final List<Map> cart;
   CartItem({
     Key key,
     @required this.name,
     @required this.img,
     @required this.isFav,
     @required this.rating,
-    @required this.raters})
+    @required this.raters,
+    @required this.price,
+    @required this.foodItem,
+    @required this.cart})
       :super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class CartItem extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context){
-                return ProductDetails();
+                return ProductDetails(foodItem: foodItem,cart: cart,);
               },
             ),
           );
@@ -43,7 +47,7 @@ class CartItem extends StatelessWidget {
                 width: MediaQuery.of(context).size.width/3,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
+                  child: Image.network(
                     "$img",
                     fit: BoxFit.cover,
                   ),
@@ -94,7 +98,7 @@ class CartItem extends StatelessWidget {
                     SizedBox(width: 10.0),
 
                     Text(
-                      r"$90",
+                      price,
                       style: TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w900,

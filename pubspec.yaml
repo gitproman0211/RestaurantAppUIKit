@@ -30,6 +30,7 @@ dependencies:
   cloud_firestore: ^0.14.0+2
   firebase_core: ^0.5.0
   flutter_spinkit: ^4.1.2
+  fluttertoast: ^7.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

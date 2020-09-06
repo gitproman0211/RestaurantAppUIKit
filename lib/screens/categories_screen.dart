@@ -11,12 +11,14 @@ class CategoriesScreen extends StatefulWidget {
   final String items;
   final List<Map> foods;
   final List categories;
+  final List<Map> cart;
   CategoriesScreen({
     Key key,
     @required this.title,
-   @required this.items,
+    @required this.items,
     @required this.foods,
-    @required  this.categories
+    @required  this.categories,
+    @required this.cart,
 })
       : super(key: key);
 
@@ -101,6 +103,7 @@ print("count=");
                 itemBuilder: (BuildContext context, int index) {
 //                  Map cat = categories[index];
                   return HomeCategory(
+                    cart:widget.cart,
                     foods:widget.foods,
                     title: widget.categories[index],
                     categories:widget.categories,
@@ -142,6 +145,7 @@ print("count=");
                   name: food['name'],
                   rating: 5.0,
                   raters: 23,
+                  cart: widget.cart,
                 );
               },
             ),

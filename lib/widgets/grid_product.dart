@@ -10,6 +10,7 @@ class GridProduct extends StatelessWidget {
   final bool isFav;
   final double rating;
   final int raters;
+  final List<Map> cart;
 
 
   GridProduct({
@@ -19,7 +20,8 @@ class GridProduct extends StatelessWidget {
     @required this.img,
     @required this.isFav,
     @required this.rating,
-    @required this.raters})
+    @required this.raters,
+    @required this.cart})
       :super(key: key);
 
   @override
@@ -110,7 +112,7 @@ class GridProduct extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context){
-              return ProductDetails(foodItem: food);
+              return ProductDetails(foodItem: food,cart: cart,);
             },
           ),
         );

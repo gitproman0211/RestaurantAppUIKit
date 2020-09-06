@@ -5,10 +5,12 @@ import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:restaurant_ui_kit/util/foods.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/smooth_star_rating.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map foodItem;
-  ProductDetails({Key key, @required this.foodItem}) : super(key: key);
+  final List<Map> cart;
+  ProductDetails({Key key, @required this.foodItem, @required this.cart}) : super(key: key);
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
@@ -254,7 +256,15 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
           color: Theme.of(context).accentColor,
-          onPressed: (){},
+          onPressed: (){
+            widget.cart.add(widget.foodItem);
+            Fluttertoast.showToast(msg: "Item Added To Cart");
+            setState(() {
+
+            });
+
+
+          },
         ),
       ),
     );

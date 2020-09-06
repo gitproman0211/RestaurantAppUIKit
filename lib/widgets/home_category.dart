@@ -4,7 +4,7 @@ import 'package:restaurant_ui_kit/screens/dishes.dart';
 
 
 class HomeCategory extends StatefulWidget {
-//  final IconData icon;
+  final List<Map> cart;
   final String title;
   final String items;
   final Function tap;
@@ -14,7 +14,7 @@ class HomeCategory extends StatefulWidget {
 
   HomeCategory({
     Key key,
-//    @required this.icon,
+    @required this.cart,
     @required this.title,
     @required this.items,
     this.tap, this.isHome,
@@ -34,7 +34,7 @@ class _HomeCategoryState extends State<HomeCategory> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context){
-              return CategoriesScreen(foods: widget.foods,title: widget.title,categories: widget.categories,items: widget.items,);
+              return CategoriesScreen(cart:widget.cart,foods: widget.foods,title: widget.title,categories: widget.categories,items: widget.items,);
             },
           ),
         );
