@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restaurant_ui_kit/util/foods.dart';
 import 'package:restaurant_ui_kit/widgets/cart_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Checkout extends StatefulWidget {
   @override
@@ -9,16 +11,44 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
-
+  String firstName="";
+  String lastName="";
+  String address="";
+  User user = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
   final TextEditingController _couponlControl = new TextEditingController();
+  int _radioValue = 0;
 
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      _radioValue = value;
+
+      switch (_radioValue) {
+        case 0:
+          break;
+        case 1:
+          break;
+        case 2:
+          break;
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-
+    getNameAddress();
   }
+  getNameAddress()async {
+    DocumentSnapshot doc= await firestoreInstance.collection("users")
+        .doc(user.uid).get();
+    firstName=doc.data()["firstName"];
+    lastName=doc.data()["lastName"];
+    address=doc.data()["address"];
+    setState(() {
 
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +78,15 @@ class _CheckoutState extends State<Checkout> {
         padding: EdgeInsets.fromLTRB(10.0,0,10.0,130),
         child: ListView(
           children: <Widget>[
+            ListTile(
+              title: Text(
+                firstName+" "+lastName,
+                style: TextStyle(
+//                    fontSize: 15,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
             SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,17 +110,13 @@ class _CheckoutState extends State<Checkout> {
             SizedBox(height: 10.0),
             ListTile(
               title: Text(
-                "John Doe",
+                address,
                 style: TextStyle(
 //                    fontSize: 15,
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              subtitle: Text("1278 Loving Acres Road Kansas City, MO 64110"),
             ),
-
-            SizedBox(height: 10.0),
-
             Text(
               "Payment Method",
               style: TextStyle(
@@ -90,58 +125,31 @@ class _CheckoutState extends State<Checkout> {
               ),
             ),
 
-            Card(
-              elevation: 4.0,
-              child: ListTile(
-                title: Text("John Doe"),
-                subtitle: Text(
-                  "5506 7744 8610 9638",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w900,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                new Radio(
+                  value: 0,
+                  groupValue: _radioValue,
+                  onChanged: _handleRadioValueChange,
+                ),
+                new Text(
+                  'CARD',
+                  style: new TextStyle(fontSize: 16.0),
+                ),
+                new Radio(
+                  value: 1,
+                  groupValue: _radioValue,
+                  onChanged: _handleRadioValueChange,
+                ),
+                new Text(
+                  'CASH',
+                  style: new TextStyle(
+                    fontSize: 16.0,
                   ),
                 ),
-                leading: Icon(
-                  FontAwesomeIcons.creditCard,
-                  size: 50.0,
-                  color: Theme.of(context).accentColor,
-                ),
-                trailing: IconButton(
-                  onPressed: (){},
-                  icon: Icon(
-                    Icons.keyboard_arrow_down,
-                  ),
-                ),
-              ),
-            ),
 
-            SizedBox(height: 20.0),
-
-            Text(
-              "Items",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-
-            ListView.builder(
-              primary: false,
-              shrinkWrap: true,
-              itemCount: foods == null ? 0 :foods.length,
-              itemBuilder: (BuildContext context, int index) {
-//                Food food = Food.fromJson(foods[index]);
-                Map food = foods[index];
-//                print(foods);
-//                print(foods.length);
-                return CartItem(
-                  img: food['img'],
-                  isFav: false,
-                  name: food['name'],
-                  rating: 5.0,
-                  raters: 23,
-                );
-              },
+              ],
             ),
           ],
         ),
@@ -255,7 +263,7 @@ class _CheckoutState extends State<Checkout> {
 
           height: 130,
         ),
-      ),
+
     );
   }
 }

@@ -11,8 +11,6 @@ class CartItem extends StatefulWidget {
   final String name;
   final String img;
   final bool isFav;
-  final double rating;
-  final int raters;
   final String price;
   final Map foodItem;
   final List<FoodInCart> cart;
@@ -23,8 +21,6 @@ class CartItem extends StatefulWidget {
     @required this.name,
     @required this.img,
     @required this.isFav,
-    @required this.rating,
-    @required this.raters,
     @required this.price,
     @required this.foodItem,
     @required this.cart,

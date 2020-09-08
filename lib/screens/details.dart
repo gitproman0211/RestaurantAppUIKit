@@ -119,32 +119,6 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
               maxLines: 2,
             ),
-
-            Padding(
-              padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
-              child: Row(
-                children: <Widget>[
-                  SmoothStarRating(
-                    starCount: 5,
-                    color: Constants.ratingBG,
-                    allowHalfRating: true,
-                    rating: 5.0,
-                    size: 10.0,
-                  ),
-                  SizedBox(width: 10.0),
-
-                  Text(
-                    "5.0 (23 Reviews)",
-                    style: TextStyle(
-                      fontSize: 11.0,
-                    ),
-                  ),
-
-                ],
-              ),
-            ),
-
-
             Padding(
               padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
               child: Row(
@@ -192,75 +166,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                 fontWeight: FontWeight.w300,
               ),
             ),
-
-//Reviews Section commented for deciding later
-//            SizedBox(height: 20.0),
-//
-//            Text(
-//              "Reviews",
-//              style: TextStyle(
-//                fontSize: 18,
-//                fontWeight: FontWeight.w800,
-//              ),
-//              maxLines: 2,
-//            ),
-//            SizedBox(height: 20.0),
-//
-//            ListView.builder(
-//              shrinkWrap: true,
-//              primary: false,
-//              physics: NeverScrollableScrollPhysics(),
-//              itemCount: comments == null?0:comments.length,
-//              itemBuilder: (BuildContext context, int index) {
-//                Map comment = comments[index];
-//                return ListTile(
-//                    leading: CircleAvatar(
-//                      radius: 25.0,
-//                      backgroundImage: AssetImage(
-//                        "${comment['img']}",
-//                      ),
-//                    ),
-//
-//                    title: Text("${comment['name']}"),
-//                    subtitle: Column(
-//                      children: <Widget>[
-//                        Row(
-//                          children: <Widget>[
-//                            SmoothStarRating(
-//                              starCount: 5,
-//                              color: Constants.ratingBG,
-//                              allowHalfRating: true,
-//                              rating: 5.0,
-//                              size: 12.0,
-//                            ),
-//                            SizedBox(width: 6.0),
-//                            Text(
-//                              "February 14, 2020",
-//                              style: TextStyle(
-//                                fontSize: 12,
-//                                fontWeight: FontWeight.w300,
-//                              ),
-//                            ),
-//                          ],
-//                        ),
-//
-//                        SizedBox(height: 7.0),
-//                        Text(
-//                          "${comment["comment"]}",
-//                        ),
-//                      ],
-//                    ),
-//                );
-//              },
-//            ),
-//
-//            SizedBox(height: 10.0),
           ],
         ),
       ),
-
-
-
       bottomNavigationBar: Container(
         height: 50.0,
         child: RaisedButton(

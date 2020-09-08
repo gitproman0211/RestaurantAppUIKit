@@ -9,8 +9,7 @@ class SliderItem extends StatelessWidget {
   final String name;
   final String img;
   final bool isFav;
-  final double rating;
-  final int raters;
+
   final List<FoodInCart> cart;
 
 
@@ -20,8 +19,7 @@ class SliderItem extends StatelessWidget {
     @required this.name,
     @required this.img,
     @required this.isFav,
-    @required this.rating,
-    @required this.raters,
+
     @required this.cart})
       :super(key: key);
 
@@ -66,12 +64,8 @@ class SliderItem extends StatelessWidget {
                   ),
                 ),
               ),
-             
             ],
-
-
           ),
-
           Padding(
             padding: EdgeInsets.only(bottom: 2.0, top: 8.0),
             child: Text(
@@ -83,31 +77,6 @@ class SliderItem extends StatelessWidget {
               maxLines: 2,
             ),
           ),
-
-          Padding(
-            padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
-            child: Row(
-              children: <Widget>[
-                SmoothStarRating(
-                  starCount: 5,
-                  color: Constants.ratingBG,
-                  allowHalfRating: true,
-                  rating: rating,
-                  size: 10.0,
-                ),
-
-                Text(
-                  " $rating ($raters Reviews)",
-                  style: TextStyle(
-                    fontSize: 11.0,
-                  ),
-                ),
-
-              ],
-            ),
-          ),
-
-
         ],
       ),
       onTap: (){

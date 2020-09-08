@@ -32,9 +32,6 @@ class _CartScreenState extends State<CartScreen>
     }
     return total;
   }
-
-
-
   updateState() {
     setState(() {});
   }
@@ -52,7 +49,6 @@ class _CartScreenState extends State<CartScreen>
                 itemCount: widget.cart == null ? 0 : widget.cart.length,
                 itemBuilder: (BuildContext context, int index) {
                   FoodInCart F = widget.cart[index];
-
                   Map food = F.food;
                   return CartItem(
                     F: F,
@@ -61,8 +57,6 @@ class _CartScreenState extends State<CartScreen>
                     img: food['image'],
                     isFav: false,
                     name: food['name'],
-                    rating: 5.0,
-                    raters: 23,
                     price: food['price'].toString(),
                     updateState: updateState,
                   );
@@ -70,6 +64,7 @@ class _CartScreenState extends State<CartScreen>
               ),
             ),
           ),
+
           RaisedButton(
             onPressed: () {},
             textColor: Colors.white,

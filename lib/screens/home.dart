@@ -147,8 +147,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                           img: food['image'],
                           isFav: false,
                           name: food['name'],
-                          rating: 5.0,
-                          raters: 23,
+
                         );
                       },
                     ).toList(),
@@ -189,67 +188,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       },
                     ),
                   ),
-
-                  SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Popular Items",
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      FlatButton(
-                        child: Text(
-                          "View More",
-                          style: TextStyle(
-//                      fontSize: 22,
-//                      fontWeight: FontWeight.w800,
-                            color: Theme.of(context).accentColor,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return DishesScreen(foods: foods);
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.0),
-
-                  GridView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: MediaQuery.of(context).size.width /
-                          (MediaQuery.of(context).size.height / 1.25),
-                    ),
-                    itemCount: foods == null ? 0 : foods.length,
-                    itemBuilder: (BuildContext context, int index) {
-//                Food food = Food.fromJson(foods[index]);
-                      Map food = foods[index];
-//                print(foods);
-//                print(foods.length);
-                      return GridProduct(
-                        img: food['image'],
-                        isFav: false,
-                        name: food['name'],
-                        rating: 5.0,
-                        raters: 23,
-                      );
-                    },
-                  ),
-
-                  SizedBox(height: 30),
                 ],
               ),
             ),
