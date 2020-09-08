@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/categories_screen.dart';
 import 'package:restaurant_ui_kit/screens/dishes.dart';
+import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 
 
 class HomeCategory extends StatefulWidget {
-  final List<Map> cart;
+  final List<FoodInCart> cart;
   final String title;
   final String items;
   final Function tap;

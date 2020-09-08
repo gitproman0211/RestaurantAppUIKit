@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/details.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
+import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/smooth_star_rating.dart';
 
 class SliderItem extends StatelessWidget {
@@ -10,7 +11,7 @@ class SliderItem extends StatelessWidget {
   final bool isFav;
   final double rating;
   final int raters;
-  final List<Map> cart;
+  final List<FoodInCart> cart;
 
 
   SliderItem({

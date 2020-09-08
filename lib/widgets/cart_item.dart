@@ -3,8 +3,11 @@ import 'package:restaurant_ui_kit/screens/details.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:restaurant_ui_kit/widgets/smooth_star_rating.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
+import 'package:restaurant_ui_kit/util/foodsInCart.dart';
+import 'dart:convert';
 
 class CartItem extends StatefulWidget {
+  final FoodInCart F;
   final String name;
   final String img;
   final bool isFav;
@@ -12,9 +15,11 @@ class CartItem extends StatefulWidget {
   final int raters;
   final String price;
   final Map foodItem;
-  final List<Map> cart;
+  final List<FoodInCart> cart;
+  final Function updateState;
   CartItem({
     Key key,
+    @required this.F,
     @required this.name,
     @required this.img,
     @required this.isFav,
@@ -22,14 +27,15 @@ class CartItem extends StatefulWidget {
     @required this.raters,
     @required this.price,
     @required this.foodItem,
-    @required this.cart})
+    @required this.cart,
+     @required this.updateState})
       :super(key: key);
   @override
   _CartItemState createState() => _CartItemState();
 }
 
 class _CartItemState extends State<CartItem> {
-  int itemCount=1;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -95,14 +101,14 @@ class _CartItemState extends State<CartItem> {
                 Row(
                   children: <Widget>[
                     Text(
-                      "Price :    \$",
+                      "Price : \$",
                       style: TextStyle(
                         fontSize: 11.0,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
                     Text(
-                      (int.parse(widget.price)*itemCount).toString(),
+                      "${widget.foodItem["price"]*widget.F.quantity}",
                       style: TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w900,
@@ -125,16 +131,18 @@ class _CartItemState extends State<CartItem> {
                     IconButton(
                       icon: Icon(Icons.remove),
                       onPressed: () {
-                        if(itemCount!=0){
-                          itemCount--;
+                        if(widget.F.quantity!=1){
+                          widget.F.decreaseQuantity();
                         }
+
                         setState(() {
 
                         });
+                        widget.updateState();
                       },
                     ),
                     Text(
-                      "$itemCount",
+                      "${widget.F.quantity}",
                       style: TextStyle(
                         fontSize: 11.0,
                         fontWeight: FontWeight.w300,
@@ -143,10 +151,11 @@ class _CartItemState extends State<CartItem> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
-                        itemCount++;
+                        widget.F.increaseQuantity();
                         setState(() {
 
                         });
+                        widget.updateState();
                       },
                     ),
                   ],

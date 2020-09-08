@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
+import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 
 class DishesScreen extends StatefulWidget {
   final List<Map> foods;
-  List<Map> cart;
+  List<FoodInCart> cart;
   DishesScreen({Key key, @required this.foods,@required this.cart}) : super(key: key);
   @override
   _DishesScreenState createState() => _DishesScreenState();

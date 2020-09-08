@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/util/categories.dart';
 import 'package:restaurant_ui_kit/util/foods.dart';
+import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 import 'package:restaurant_ui_kit/widgets/home_category.dart';
@@ -11,7 +12,7 @@ class CategoriesScreen extends StatefulWidget {
   final String items;
   final List<Map> foods;
   final List categories;
-  final List<Map> cart;
+  final List<FoodInCart> cart;
   CategoriesScreen({
     Key key,
     @required this.title,

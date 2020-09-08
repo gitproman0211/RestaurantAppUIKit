@@ -3,13 +3,14 @@ import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/util/comments.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:restaurant_ui_kit/util/foods.dart';
+import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/smooth_star_rating.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map foodItem;
-  final List<Map> cart;
+  final List<FoodInCart> cart;
   ProductDetails({Key key, @required this.foodItem, @required this.cart}) : super(key: key);
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -271,11 +272,11 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           color: Theme.of(context).accentColor,
           onPressed: (){
-            if(widget.cart.contains(widget.foodItem)){
+            if(widget.cart.contains(FoodInCart(widget.foodItem))){
               Fluttertoast.showToast(msg: "Item Already Present In Cart");
             }
             else{
-              widget.cart.add(widget.foodItem);
+              widget.cart.add(FoodInCart(widget.foodItem));
               Fluttertoast.showToast(msg: "Item Added To Cart");
             }
             setState(() {

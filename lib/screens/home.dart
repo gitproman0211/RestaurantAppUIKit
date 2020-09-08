@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/dishes.dart';
+import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 import 'package:restaurant_ui_kit/widgets/home_category.dart';
 import 'package:restaurant_ui_kit/widgets/slider_item.dart';
@@ -10,7 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  List<Map> cart;
+  List<FoodInCart> cart;
   Home({
     Key key,
     @required this.cart,

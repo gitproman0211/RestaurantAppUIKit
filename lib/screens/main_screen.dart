@@ -7,6 +7,7 @@ import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/screens/profile.dart';
 import 'package:restaurant_ui_kit/screens/search.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
+import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 
 
@@ -19,7 +20,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
   int _page = 0;
-  List <Map> cart=[];
+  List <FoodInCart> cart=[];
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
