@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/screens/checkout.dart';
+import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/foods.dart';
 import 'package:restaurant_ui_kit/widgets/cart_item.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
@@ -45,23 +47,27 @@ class _CartScreenState extends State<CartScreen>
           Expanded(
             child: Padding(
               padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-              child: ListView.builder(
-                itemCount: widget.cart == null ? 0 : widget.cart.length,
-                itemBuilder: (BuildContext context, int index) {
-                  FoodInCart F = widget.cart[index];
-                  Map food = F.food;
-                  return CartItem(
-                    F: F,
-                    foodItem: food,
-                    cart: widget.cart,
-                    img: food['image'],
-                    isFav: false,
-                    name: food['name'],
-                    price: food['price'].toString(),
-                    updateState: updateState,
+              child: Consumer<CartModel>(
+                builder:(context,cartModel,child){
+                  return ListView.builder(
+                    itemCount: cartModel.cart == null ? 0 : cartModel.cart.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      FoodInCart F = cartModel.cart[index];
+                      Map food = F.food;
+                      return CartItem(
+                        F: F,
+                        foodItem: food,
+                        cart: cartModel,
+                        img: food['image'],
+                        isFav: false,
+                        name: food['name'],
+                        price: food['price'].toString(),
+                        updateState: updateState,
+                      );
+                    },
                   );
-                },
-              ),
+                }
+                ),
             ),
           ),
 

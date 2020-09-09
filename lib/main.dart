@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:restaurant_ui_kit/providers/app_provider.dart';
 import 'package:restaurant_ui_kit/screens/splash.dart';
+import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 
 import 'util/const.dart';
@@ -13,7 +15,8 @@ void main() async{
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AppProvider()),
+        ChangeNotifierProvider<CartModel>(create: (_) =>CartModel()),
+        ChangeNotifierProvider<AppProvider>(create: (_) => AppProvider()),
       ],
       child: MyApp(),
     ),

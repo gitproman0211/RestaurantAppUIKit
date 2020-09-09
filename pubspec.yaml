@@ -24,13 +24,13 @@ dependencies:
   shared_preferences: ^0.5.4+5
   font_awesome_flutter: ^8.5.0
   carousel_slider: ^1.4.1
-  provider: ^4.0.1
   firebase_auth: ^0.18.0+1
   rflutter_alert: ^1.0.3
   cloud_firestore: ^0.14.0+2
   firebase_core: ^0.5.0
   flutter_spinkit: ^4.1.2
   fluttertoast: ^7.0.4
+  provider: ^4.3.2+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

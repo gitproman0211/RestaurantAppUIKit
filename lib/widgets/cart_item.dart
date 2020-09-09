@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/details.dart';
+import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:restaurant_ui_kit/widgets/smooth_star_rating.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
@@ -13,7 +14,7 @@ class CartItem extends StatefulWidget {
   final bool isFav;
   final String price;
   final Map foodItem;
-  final List<FoodInCart> cart;
+  final CartModel cart;
   final Function updateState;
   CartItem({
     Key key,
@@ -41,7 +42,7 @@ class _CartItemState extends State<CartItem> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context){
-                return ProductDetails(foodItem: widget.foodItem,cart: widget.cart,);
+                return ProductDetails(foodItem: widget.foodItem,cart: widget.cart.cart,);
               },
             ),
           );
@@ -128,7 +129,7 @@ class _CartItemState extends State<CartItem> {
                       icon: Icon(Icons.remove),
                       onPressed: () {
                         if(widget.F.quantity!=1){
-                          widget.F.decreaseQuantity();
+                          widget.cart.decrementQuantity(widget.F);
                         }
 
                         setState(() {
@@ -147,7 +148,7 @@ class _CartItemState extends State<CartItem> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
-                        widget.F.increaseQuantity();
+                        widget.cart.incrementQuantity(widget.F);
                         setState(() {
 
                         });

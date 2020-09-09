@@ -264,6 +264,6 @@ class _CheckoutState extends State<Checkout> {
           height: 130,
         ),
 
-    );
+    ));
   }
 }

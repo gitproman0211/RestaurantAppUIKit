@@ -6,9 +6,12 @@ import 'package:restaurant_ui_kit/screens/home.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/screens/profile.dart';
 import 'package:restaurant_ui_kit/screens/search.dart';
+import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
+import 'package:provider/provider.dart';
+
 
 
 
@@ -34,22 +37,28 @@ class _MainScreenState extends State<MainScreen> {
           ),
           elevation: 0.0,
           actions: <Widget>[
-            IconButton(
-              icon: IconBadge(
-                icon: Icons.shopping_cart,
-                size: 24.0,
-              ),
-              color: _page == 3
-                  ? Theme.of(context).accentColor
-                  : Theme
-                  .of(context)
-                  .textTheme.caption.color,
-              onPressed: ()=>_pageController.jumpToPage(3),
-            ),
+           Consumer<CartModel>(
+             builder: (context,cartModel,child){
+               return IconButton(
+                 icon: IconBadge(
+                   icon:Icons.shopping_cart,
+                   size: 24.0,
+                   count: cartModel.quantity,
+                 ),
+                 color: _page == 3
+                     ? Theme.of(context).accentColor
+                     : Theme
+                     .of(context)
+                     .textTheme.caption.color,
+                 onPressed: ()=>_pageController.jumpToPage(3),
+               );
+             },
+           ),
             IconButton(
               icon: IconBadge(
                 icon: Icons.notifications,
                 size: 22.0,
+                count: 0,
               ),
               onPressed: (){
                 Navigator.of(context).push(
@@ -73,7 +82,11 @@ class _MainScreenState extends State<MainScreen> {
             Home(cart: cart,),
             FavoriteScreen(),
             SearchScreen(),
-            CartScreen(cart: cart,),
+            Consumer<CartModel>(
+                builder: (context,cartModel,child){
+                  return CartScreen(cart: cartModel.cart);
+                }
+            ),
             Profile(),
           ],
         ),
@@ -124,18 +137,18 @@ class _MainScreenState extends State<MainScreen> {
                 onPressed: ()=>_pageController.jumpToPage(2),
               ),
 
-              IconButton(
-                icon: IconBadge(
-                  icon: Icons.shopping_cart,
-                  size: 24.0,
-                ),
-                color: _page == 3
-                    ? Theme.of(context).accentColor
-                    : Theme
-                    .of(context)
-                    .textTheme.caption.color,
-                onPressed: ()=>_pageController.jumpToPage(3),
-              ),
+              // IconButton(
+              //   icon: Icon(
+              //     Icons.shopping_cart,
+              //     size: 24.0,
+              //   ),
+              //   color: _page == 3
+              //       ? Theme.of(context).accentColor
+              //       : Theme
+              //       .of(context)
+              //       .textTheme.caption.color,
+              //   onPressed: ()=>_pageController.jumpToPage(3),
+              // ),
 
               IconButton(
                 icon: Icon(

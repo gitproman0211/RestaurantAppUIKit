@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
+import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/comments.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:restaurant_ui_kit/util/foods.dart';
@@ -171,26 +173,32 @@ class _ProductDetailsState extends State<ProductDetails> {
       ),
       bottomNavigationBar: Container(
         height: 50.0,
-        child: RaisedButton(
-          child: Text(
-            "ADD TO CART",
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          color: Theme.of(context).accentColor,
-          onPressed: (){
-            if(widget.cart.contains(FoodInCart(widget.foodItem))){
-              Fluttertoast.showToast(msg: "Item Already Present In Cart");
-            }
-            else{
-              widget.cart.add(FoodInCart(widget.foodItem));
-              Fluttertoast.showToast(msg: "Item Added To Cart");
-            }
-            setState(() {
+        child: Consumer<CartModel>(
+          builder:(context,cartModel,child){
+            return RaisedButton(
+              child: Text(
+                "ADD TO CART",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              color: Theme.of(context).accentColor,
+              onPressed: (){
+                if(cartModel.cart.contains(FoodInCart(widget.foodItem))){
+                  Fluttertoast.showToast(msg: "Item Already Present In Cart");
+                }
+                else{
 
-            });
-            },
+                  cartModel.addToCart(FoodInCart(widget.foodItem));
+                  Fluttertoast.showToast(msg: "Item Added To Cart");
+                }
+                setState(() {
+
+                });
+              },
+            );
+          },
+
         ),
       ),
     );
