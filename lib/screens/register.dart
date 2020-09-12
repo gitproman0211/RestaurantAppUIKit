@@ -298,6 +298,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "email": _emailController.text,
                       "address": "",
                       "phoneNumber": "",
+                      "points":0,
                     }).then((value) {
                       print("Success");
                     });

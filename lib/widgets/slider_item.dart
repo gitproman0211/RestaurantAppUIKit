@@ -83,7 +83,7 @@ class SliderItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context){
-              return ProductDetails(foodItem: food, cart: cart,);
+              return ProductDetails(foodItem: food);
             },
           ),
         );

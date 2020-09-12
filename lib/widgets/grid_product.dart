@@ -11,7 +11,7 @@ class GridProduct extends StatelessWidget {
   final bool isFav;
   final double rating;
   final int raters;
-  final List<FoodInCart> cart;
+  // final List<FoodInCart> cart;
 
 
   GridProduct({
@@ -22,7 +22,7 @@ class GridProduct extends StatelessWidget {
     @required this.isFav,
     @required this.rating,
     @required this.raters,
-    @required this.cart})
+    })
       :super(key: key);
 
   @override
@@ -82,38 +82,13 @@ class GridProduct extends StatelessWidget {
               maxLines: 2,
             ),
           ),
-
-          Padding(
-            padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
-            child: Row(
-              children: <Widget>[
-                SmoothStarRating(
-                  starCount: 5,
-                  color: Constants.ratingBG,
-                  allowHalfRating: true,
-                  rating: rating,
-                  size: 10.0,
-                ),
-
-                Text(
-                  " $rating ($raters Reviews)",
-                  style: TextStyle(
-                    fontSize: 11.0,
-                  ),
-                ),
-
-              ],
-            ),
-          ),
-
-
         ],
       ),
       onTap: (){
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context){
-              return ProductDetails(foodItem: food,cart: cart,);
+              return ProductDetails(foodItem: food);
             },
           ),
         );

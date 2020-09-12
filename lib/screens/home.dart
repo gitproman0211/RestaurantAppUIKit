@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/dishes.dart';
+import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 import 'package:restaurant_ui_kit/widgets/home_category.dart';
@@ -9,12 +10,14 @@ import 'package:restaurant_ui_kit/util/categories.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class Home extends StatefulWidget {
-  List<FoodInCart> cart;
+  // List<FoodInCart> cart;
   Home({
     Key key,
-    @required this.cart,
+    // @required this.cart,
 
   })
       : super(key: key);
@@ -25,6 +28,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
   final firestoreInstance = FirebaseFirestore.instance;
   List<Map> foods = [];
+  int points;
   List<String> categories = [];
   bool isLoading = true;
 
@@ -76,11 +80,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
     );
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getMenu();
+
   }
 
   int _current = 0;
@@ -123,7 +129,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (BuildContext context) {
-                                return DishesScreen(foods: foods,cart: widget.cart,);
+                                return DishesScreen(foods: foods);
+                                // return DishesScreen(foods: foods,cart: widget.cart,);
                               },
                             ),
                           );
@@ -142,7 +149,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       (index, i) {
                         Map food = foods[index];
                         return SliderItem(
-                          cart:widget.cart,
+                          // cart:widget.cart,
                           food:food,
                           img: food['image'],
                           isFav: false,
@@ -178,7 +185,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       itemCount: categories == null ? 0 : categories.length,
                       itemBuilder: (BuildContext context, int index) {
                         return HomeCategory(
-                          cart:widget.cart,
+                          // cart:widget.cart,
                           foods:foods,
                           title: categories[index],
                           categories:categories,

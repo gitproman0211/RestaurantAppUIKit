@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
+import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/categories.dart';
 import 'package:restaurant_ui_kit/util/foods.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
@@ -74,17 +76,22 @@ print("count=");
         ),
         elevation: 0.0,
         actions: <Widget>[
-          IconButton(
-            icon: IconBadge(
-              icon: Icons.shopping_cart,
-              size: 24.0,
-            ),
-            color: _page == 3
-                ? Theme.of(context).accentColor
-                : Theme
-                .of(context)
-                .textTheme.caption.color,
-            onPressed: ()=>_pageController.jumpToPage(3),
+          Consumer<CartModel>(
+            builder: (context,cartModel,child){
+              return IconButton(
+                icon: IconBadge(
+                  icon:Icons.shopping_cart,
+                  size: 24.0,
+                  count: cartModel.quantity,
+                ),
+                color: _page == 3
+                    ? Theme.of(context).accentColor
+                    : Theme
+                    .of(context)
+                    .textTheme.caption.color,
+                onPressed: ()=>_pageController.jumpToPage(3),
+              );
+            },
           ),
           IconButton(
             icon: IconBadge(
@@ -160,7 +167,7 @@ print("count=");
                   name: food['name'],
                   rating: 5.0,
                   raters: 23,
-                  cart: widget.cart,
+
                 );
               },
             ),

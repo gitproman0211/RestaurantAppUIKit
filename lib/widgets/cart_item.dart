@@ -16,6 +16,7 @@ class CartItem extends StatefulWidget {
   final Map foodItem;
   final CartModel cart;
   final Function updateState;
+
   CartItem({
     Key key,
     @required this.F,
@@ -25,7 +26,8 @@ class CartItem extends StatefulWidget {
     @required this.price,
     @required this.foodItem,
     @required this.cart,
-     @required this.updateState})
+     @required this.updateState,
+  })
       :super(key: key);
   @override
   _CartItemState createState() => _CartItemState();
@@ -42,7 +44,7 @@ class _CartItemState extends State<CartItem> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context){
-                return ProductDetails(foodItem: widget.foodItem,cart: widget.cart.cart,);
+                return ProductDetails(foodItem: widget.foodItem);
               },
             ),
           );
@@ -84,14 +86,7 @@ class _CartItemState extends State<CartItem> {
                       rating: 5.0,
                       size: 12.0,
                     ),
-                    SizedBox(width: 6.0),
-                    Text(
-                      "5.0 (23 Reviews)",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
+
                   ],
                 ),
                 SizedBox(height: 10.0),
@@ -131,7 +126,10 @@ class _CartItemState extends State<CartItem> {
                         if(widget.F.quantity!=1){
                           widget.cart.decrementQuantity(widget.F);
                         }
+                        if(widget.F.food["redeem"]){
+                          widget.cart.increasePoints(widget.F.food["points"]);
 
+                        }
                         setState(() {
 
                         });
@@ -148,7 +146,20 @@ class _CartItemState extends State<CartItem> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () {
-                        widget.cart.incrementQuantity(widget.F);
+
+                        if(widget.F.food["redeem"]){
+                          if(widget.cart.points>=widget.F.food["points"]){
+                            widget.cart.incrementQuantity(widget.F);
+                            widget.cart.decreasePoints(widget.F.food["points"]);
+                          }
+                          else{
+                            alertDialogNotEnoughPoints(context);
+                          }
+
+                        }
+                        else{
+                          widget.cart.incrementQuantity(widget.F);
+                        }
                         setState(() {
 
                         });
@@ -165,6 +176,29 @@ class _CartItemState extends State<CartItem> {
       ),
     );;
   }
+}
+alertDialogNotEnoughPoints(BuildContext context) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Sorry"),
+        content: Text("You don't have enough points"),
+        actions: [
+          ok,
+        ],
+        elevation: 5,
+      );
+    },
+  );
 }
 
 // class CartItem extends StatelessWidget {

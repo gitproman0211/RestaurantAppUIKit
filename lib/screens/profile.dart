@@ -54,7 +54,7 @@ class _ProfileState extends State<Profile> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: Image.asset(
+                  child: Image.network(
                     "assets/cm4.jpeg",
                     fit: BoxFit.cover,
                     width: 100.0,

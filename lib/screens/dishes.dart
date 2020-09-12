@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
+import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 
 class DishesScreen extends StatefulWidget {
   final List<Map> foods;
-  List<FoodInCart> cart;
-  DishesScreen({Key key, @required this.foods,@required this.cart}) : super(key: key);
+  // List<FoodInCart> cart;
+  DishesScreen({Key key, @required this.foods}) : super(key: key);
   @override
   _DishesScreenState createState() => _DishesScreenState();
 }
 
 class _DishesScreenState extends State<DishesScreen> {
   List<String> categories = [];
+  PageController _pageController;
+  int _page = 3;
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -52,6 +56,23 @@ class _DishesScreenState extends State<DishesScreen> {
         ),
         elevation: 0.0,
         actions: <Widget>[
+          Consumer<CartModel>(
+            builder: (context,cartModel,child){
+              return IconButton(
+                icon: IconBadge(
+                  icon:Icons.shopping_cart,
+                  size: 24.0,
+                  count: cartModel.quantity,
+                ),
+                color: _page == 3
+                    ? Theme.of(context).accentColor
+                    : Theme
+                    .of(context)
+                    .textTheme.caption.color,
+                onPressed: ()=>_pageController.jumpToPage(3),
+              );
+            },
+          ),
           IconButton(
             icon: IconBadge(
               icon: Icons.notifications,
@@ -109,7 +130,7 @@ class _DishesScreenState extends State<DishesScreen> {
             Map food = temp[index];
             print(food);
             return GridProduct(
-              cart:widget.cart,
+              // cart:widget.cart,
               food:food,
               img: food['image'],
               isFav: false,

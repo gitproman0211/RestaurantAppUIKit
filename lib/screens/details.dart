@@ -12,8 +12,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map foodItem;
-  final List<FoodInCart> cart;
-  ProductDetails({Key key, @required this.foodItem, @required this.cart}) : super(key: key);
+
+  ProductDetails({Key key, @required this.foodItem}) : super(key: key);
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
@@ -39,17 +39,22 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
         elevation: 0.0,
         actions: <Widget>[
-          IconButton(
-            icon: IconBadge(
-              icon: Icons.shopping_cart,
-              size: 24.0,
-            ),
-            color: _page == 3
-                ? Theme.of(context).accentColor
-                : Theme
-                .of(context)
-                .textTheme.caption.color,
-            onPressed: ()=>_pageController.jumpToPage(3),
+          Consumer<CartModel>(
+            builder: (context,cartModel,child){
+              return IconButton(
+                icon: IconBadge(
+                  icon:Icons.shopping_cart,
+                  size: 24.0,
+                  count: cartModel.quantity,
+                ),
+                color: _page == 3
+                    ? Theme.of(context).accentColor
+                    : Theme
+                    .of(context)
+                    .textTheme.caption.color,
+                onPressed: ()=>_pageController.jumpToPage(3),
+              );
+            },
           ),
           IconButton(
             icon: IconBadge(
@@ -125,15 +130,6 @@ class _ProductDetailsState extends State<ProductDetails> {
               padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
               child: Row(
                 children: <Widget>[
-//                  Text(
-//                    "20 Pieces",
-//                    style: TextStyle(
-//                      fontSize: 11.0,
-//                      fontWeight: FontWeight.w300,
-//                    ),
-//                  ),
-//                  SizedBox(width: 10.0),
-
                   Text(
                     "\$ "+widget.foodItem["price"].toString(),
                     style: TextStyle(
