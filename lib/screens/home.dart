@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_ui_kit/screens/details.dart';
 import 'package:restaurant_ui_kit/screens/dishes.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
@@ -138,10 +139,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       ),
                     ],
                   ),
-
                   SizedBox(height: 10.0),
-
-                  //Slider Here
                   CarouselSlider(
                     height: MediaQuery.of(context).size.height / 2.4,
                     items: map<Widget>(
@@ -195,6 +193,42 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       },
                     ),
                   ),
+                  SizedBox(height: 40.0),
+                  Text(
+                    "Popular Items",
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: foods.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                              leading: CircleAvatar(
+                                  radius: 40,
+                                  backgroundImage: NetworkImage('${foods[index]["image"]}')),
+                              title: Text('${foods[index]["name"]}'),
+                              trailing:Text('\$'+'${foods[index]["price"]}'),
+                              onTap: (){
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context){
+                                      return ProductDetails(foodItem: foods[index]);
+                                    },
+                                  ),
+                                );
+                              }
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
             ),

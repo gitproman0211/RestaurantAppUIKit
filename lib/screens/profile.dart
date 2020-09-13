@@ -1,6 +1,8 @@
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/providers/app_provider.dart';
+import 'package:restaurant_ui_kit/screens/image_capture.dart';
 import 'package:restaurant_ui_kit/screens/splash.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,6 +20,7 @@ class _ProfileState extends State<Profile> {
   String lastName="";
   String phoneNumber="";
   String address="";
+  String profilePicture="";
   User user = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
 
@@ -26,8 +29,6 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     getEmail();
-
-
   }
   getEmail()async {
     DocumentSnapshot doc= await firestoreInstance.collection("users")
@@ -37,6 +38,7 @@ class _ProfileState extends State<Profile> {
     lastName=doc.data()["lastName"];
     phoneNumber=doc.data()["phoneNumber"];
     address=doc.data()["address"];
+    profilePicture=doc.data()["profilePicture"];
     setState(() {
 
     });
@@ -54,13 +56,32 @@ class _ProfileState extends State<Profile> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: Image.network(
-                    "assets/cm4.jpeg",
-                    fit: BoxFit.cover,
-                    width: 100.0,
-                    height: 100.0,
-                  ),
-                ),
+                  child:  CircularProfileAvatar(
+                    profilePicture, //sets image path, it should be a URL string. default value is empty string, if path is empty it will display only initials
+                    radius: 50, // sets radius, default 50.0
+                    backgroundColor: Colors.transparent, // sets background color, default Colors.white
+                    borderWidth: 10,  // sets border, default 0.0
+                    initialsText: Text(
+                      "",
+                      style: TextStyle(fontSize: 40, color: Colors.white),
+                    ),  // sets initials text, set your own style, default Text('')
+                    borderColor: Colors.brown, // sets border color, default Colors.white
+                    elevation: 5.0, // sets elevation (shadow of the profile picture), default value is 0.0
+                    foregroundColor: Colors.brown.withOpacity(0.5), //sets foreground colour, it works if showInitialTextAbovePicture = true , default Colors.transparent
+                    cacheImage: true, // allow widget to cache image against provided url
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context){
+                            return ImageCapture();
+                          },
+                        ),
+                      );
+                    }, // sets on tap
+                    showInitialTextAbovePicture: true, // setting it true will show initials text above profile picture, default false
+                  )
+      ),
+
 
                 Expanded(
                   child: Column(
