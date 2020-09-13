@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/cart.dart';
@@ -23,7 +24,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
   int _page = 0;
-  // List <FoodInCart> cart=[];
+
+
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -128,7 +131,7 @@ class _MainScreenState extends State<MainScreen> {
                 icon: Icon(
                   Icons.search,
                   size: 24.0,
-                  color: Theme.of(context).primaryColor,
+                  // color: Theme.of(context).primaryColor,
                 ),
                 color: _page == 2
                     ? Theme.of(context).accentColor
@@ -170,15 +173,15 @@ class _MainScreenState extends State<MainScreen> {
           color: Theme.of(context).primaryColor,
           shape: CircularNotchedRectangle(),
         ),
-        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          elevation: 4.0,
-          child: Icon(
-            Icons.search,
-          ),
-          onPressed: ()=>_pageController.jumpToPage(2),
-        ),
+        // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: FloatingActionButton(
+        //   elevation: 4.0,
+        //   child: Icon(
+        //     Icons.search,
+        //   ),
+        //   onPressed: ()=>_pageController.jumpToPage(2),
+        // ),
 
       ),
     );

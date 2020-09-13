@@ -118,24 +118,6 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
                           ),
                         ),
                       ),
-                      Positioned(
-                        right: -10.0,
-                        bottom: 3.0,
-                        child: RawMaterialButton(
-                          onPressed: () {},
-                          fillColor: Colors.white,
-                          shape: CircleBorder(),
-                          elevation: 4.0,
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(
-                              isFav ? Icons.favorite : Icons.favorite_border,
-                              color: Colors.red,
-                              size: 17,
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                   SizedBox(height: 10.0),

@@ -41,12 +41,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
       // print(a);
       order.add(a);
     }
-    print("Printing order");
-    print(order);
-    print("order length=${order.length}");
+    // print("Printing order");
+    // print(order);
+    // print("order length=${order.length}");
     List<dynamic>pastOrders=[];
     for(var i=0;i<order.length;i++){
-      print("order[i] length=${order[i].length}");
+      // print("order[i] length=${order[i].length}");
       for(var j=0;j<order[i].length;j++){
         if(!pastOrders.contains(order[i][j])){
           pastOrders.add(order[i][j]);
@@ -63,9 +63,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
         }
       }
     }
-    print("Printing Favorites");
-    print(favorites.length);
-    print(favorites);
+    // print("Printing Favorites");
+    // print(favorites.length);
+    // print(favorites);
     setState(() {
 
     });
