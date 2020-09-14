@@ -73,21 +73,21 @@ class _DishesScreenState extends State<DishesScreen> {
               );
             },
           ),
-          IconButton(
-            icon: IconBadge(
-              icon: Icons.notifications,
-              size: 22.0,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return Notifications();
-                  },
-                ),
-              );
-            },
-          ),
+          // IconButton(
+          //   icon: IconBadge(
+          //     icon: Icons.notifications,
+          //     size: 22.0,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (BuildContext context) {
+          //           return Notifications();
+          //         },
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
       body: Padding(
@@ -133,10 +133,10 @@ class _DishesScreenState extends State<DishesScreen> {
               // cart:widget.cart,
               food:food,
               img: food['image'],
-              isFav: false,
+              // isFav: false,
               name: food['name'],
-              rating: 5.0,
-              raters: 23,
+              // rating: 5.0,
+              // raters: 23,
             );
           },
         ),

@@ -8,9 +8,9 @@ class GridProduct extends StatelessWidget {
   final Map food;
   final String name;
   final String img;
-  final bool isFav;
-  final double rating;
-  final int raters;
+  // final bool isFav;
+  // final double rating;
+  // final int raters;
   // final List<FoodInCart> cart;
 
 
@@ -19,9 +19,9 @@ class GridProduct extends StatelessWidget {
     @required this.food,
     @required this.name,
     @required this.img,
-    @required this.isFav,
-    @required this.rating,
-    @required this.raters,
+    // @required this.isFav,
+    // @required this.rating,
+    // @required this.raters,
     })
       :super(key: key);
 

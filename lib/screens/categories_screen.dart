@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_ui_kit/screens/cart.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
-import 'package:restaurant_ui_kit/util/categories.dart';
-import 'package:restaurant_ui_kit/util/foods.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
@@ -89,25 +88,34 @@ print("count=");
                     : Theme
                     .of(context)
                     .textTheme.caption.color,
-                onPressed: ()=>_pageController.jumpToPage(3),
+                onPressed: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return CartScreen(cartModel: cartModel);
+                        // return DishesScreen(foods: foods,cart: widget.cart,);
+                      },
+                    ),
+                  );
+                },
               );
             },
           ),
-          IconButton(
-            icon: IconBadge(
-              icon: Icons.notifications,
-              size: 22.0,
-            ),
-            onPressed: (){
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context){
-                    return Notifications();
-                  },
-                ),
-              );
-            },
-          ),
+          // IconButton(
+          //   icon: IconBadge(
+          //     icon: Icons.notifications,
+          //     size: 22.0,
+          //   ),
+          //   onPressed: (){
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (BuildContext context){
+          //           return Notifications();
+          //         },
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
 
@@ -163,10 +171,10 @@ print("count=");
                 return GridProduct(
                   food: food,
                   img: food['image'],
-                  isFav: false,
+                  // isFav: false,
                   name: food['name'],
-                  rating: 5.0,
-                  raters: 23,
+                  // rating: 5.0,
+                  // raters: 23,
 
                 );
               },

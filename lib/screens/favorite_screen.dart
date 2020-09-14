@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant_ui_kit/util/foods.dart';
+
 import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 
 class FavoriteScreen extends StatefulWidget {
-
   FavoriteScreen({Key key}) : super(key: key);
-
   @override
   _FavoriteScreenState createState() => _FavoriteScreenState();
 }
@@ -43,7 +41,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
     }
     // print("Printing order");
     // print(order);
-    // print("order length=${order.length}");
+    print("order length=${order.length}");
     List<dynamic>pastOrders=[];
     for(var i=0;i<order.length;i++){
       // print("order[i] length=${order[i].length}");
@@ -63,8 +61,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
         }
       }
     }
-    // print("Printing Favorites");
-    // print(favorites.length);
+     print("Printing Favorites");
+     print(favorites.length);
     // print(favorites);
     setState(() {
 
@@ -88,7 +86,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
             ),
             SizedBox(height: 10.0),
 
-            GridView.builder(
+            favorites.length==0? Text(
+              "No Favourites Yet!!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.grey,
+                fontWeight: FontWeight.w800,
+              ),
+            ):GridView.builder(
               shrinkWrap: true,
               primary: false,
               physics: NeverScrollableScrollPhysics(),
@@ -103,10 +109,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
                 return GridProduct(
                   food: food,
                   img: food['image'],
-                  isFav: true,
+                  // isFav: true,
                   name: food['name'],
-                  rating: 5.0,
-                  raters: 23,
+                  // rating: 5.0,
+                  // raters: 23,
                 );
               },
             ),

@@ -8,7 +8,7 @@ class SliderItem extends StatelessWidget {
   final Map food;
   final String name;
   final String img;
-  final bool isFav;
+  // final bool isFav;
 
   final List<FoodInCart> cart;
 
@@ -18,7 +18,7 @@ class SliderItem extends StatelessWidget {
     @required this.food,
     @required this.name,
     @required this.img,
-    @required this.isFav,
+    // @required this.isFav,
 
     @required this.cart})
       :super(key: key);
@@ -44,26 +44,26 @@ class SliderItem extends StatelessWidget {
                 ),
               ),
 
-              Positioned(
-                right: -10.0,
-                bottom: 3.0,
-                child: RawMaterialButton(
-                  onPressed: (){},
-                  fillColor: Colors.white,
-                  shape: CircleBorder(),
-                  elevation: 4.0,
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Icon(
-                      isFav
-                          ?Icons.favorite
-                          :Icons.favorite_border,
-                      color: Colors.red,
-                      size: 17,
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   right: -10.0,
+              //   bottom: 3.0,
+              //   child: RawMaterialButton(
+              //     onPressed: (){},
+              //     fillColor: Colors.white,
+              //     shape: CircleBorder(),
+              //     elevation: 4.0,
+              //     child: Padding(
+              //       padding: EdgeInsets.all(5),
+              //       child: Icon(
+              //         isFav
+              //             ?Icons.favorite
+              //             :Icons.favorite_border,
+              //         color: Colors.red,
+              //         size: 17,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Padding(

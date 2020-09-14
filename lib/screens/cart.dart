@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/screens/checkout.dart';
 import 'package:restaurant_ui_kit/screens/redeemDishes.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
-import 'package:restaurant_ui_kit/util/foods.dart';
 import 'package:restaurant_ui_kit/widgets/cart_item.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +24,7 @@ class _CartScreenState extends State<CartScreen>
    int points=0;
   bool redeemPointsButton=true;
   final firestoreInstance = FirebaseFirestore.instance;
+  final ScrollController _scrollController=ScrollController();
   @override
   void initState() {
     // TODO: implement initState
@@ -70,40 +70,59 @@ class _CartScreenState extends State<CartScreen>
     return Scaffold(
       body: Column(
         children: <Widget>[
+          Text(
+            "Number Of Items= ${myList.length}",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              color: Colors.grey,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
               child: Consumer<CartModel>(
                 builder:(context,cartModel,child){
-                  return ListView.builder(
-                    itemCount: cartModel.cart == null ? 0 : cartModel.cart.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      FoodInCart F = cartModel.cart[index];
-                      Map food = F.food;
-                      return CartItem(
-                        F: F,
-                        foodItem: food,
-                        cart: cartModel,
-                        img: food['image'],
-                        isFav: false,
-                        name: food['name'],
-                        price: food['price'].toString(),
-                        updateState: updateState,
+                  return Scrollbar(
+                    isAlwaysShown: true,
+                    controller: _scrollController,
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: cartModel.cart == null ? 0 : cartModel.cart.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        FoodInCart F = cartModel.cart[index];
+                        Map food = F.food;
+                        return CartItem(
+                          F: F,
+                          foodItem: food,
+                          cart: cartModel,
+                          img: food['image'],
+                          isFav: false,
+                          name: food['name'],
+                          price: food['price'].toString(),
+                          updateState: updateState,
 
-                      );
-                    },
+                        );
+                      },
+                    ),
                   );
                 }
                 ),
             ),
           ),
-          RaisedButton(
-            onPressed: () {},
-            textColor: Colors.white,
-            color: Colors.red,
-            padding: const EdgeInsets.all(8.0),
-            child: new Text(
-              "Points= ${widget.cartModel.points}",
+          Text(
+            "GRAND TOTAL= \$ ${calculateTotal()}",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          Text(
+            "Points Available To Redeem = ${widget.cartModel.points}",
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w300,
             ),
           ),
           RaisedButton(
@@ -125,15 +144,7 @@ class _CartScreenState extends State<CartScreen>
               "REDEEM POINTS",
             ),
           ),
-          RaisedButton(
-            onPressed: () {},
-            textColor: Colors.white,
-            color: Colors.red,
-            padding: const EdgeInsets.all(8.0),
-            child: new Text(
-              "GRAND TOTAL= \$ ${calculateTotal()}",
-            ),
-          ),
+
           RaisedButton(
             onPressed: () {
               Navigator.of(context).push(

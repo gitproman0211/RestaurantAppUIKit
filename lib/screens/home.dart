@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/details.dart';
 import 'package:restaurant_ui_kit/screens/dishes.dart';
-import 'package:restaurant_ui_kit/util/cartModel.dart';
-import 'package:restaurant_ui_kit/util/foodsInCart.dart';
-import 'package:restaurant_ui_kit/widgets/grid_product.dart';
 import 'package:restaurant_ui_kit/widgets/home_category.dart';
 import 'package:restaurant_ui_kit/widgets/slider_item.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:restaurant_ui_kit/util/categories.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 
 class Home extends StatefulWidget {
@@ -150,7 +144,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                           // cart:widget.cart,
                           food:food,
                           img: food['image'],
-                          isFav: false,
+                          // isFav: false,
                           name: food['name'],
 
                         );

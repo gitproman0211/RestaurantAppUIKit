@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_ui_kit/screens/cart.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
-import 'package:restaurant_ui_kit/util/comments.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
-import 'package:restaurant_ui_kit/util/foods.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/smooth_star_rating.dart';
@@ -21,7 +20,7 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   PageController _pageController;
   int _page = 0;
-  bool isFav = false;
+  // bool isFav = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,25 +51,34 @@ class _ProductDetailsState extends State<ProductDetails> {
                     : Theme
                     .of(context)
                     .textTheme.caption.color,
-                onPressed: ()=>_pageController.jumpToPage(3),
+                onPressed: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return CartScreen(cartModel: cartModel);
+                        // return DishesScreen(foods: foods,cart: widget.cart,);
+                      },
+                    ),
+                  );
+                },
               );
             },
           ),
-          IconButton(
-            icon: IconBadge(
-              icon: Icons.notifications,
-              size: 22.0,
-            ),
-            onPressed: (){
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context){
-                    return Notifications();
-                  },
-                ),
-              );
-            },
-          ),
+          // IconButton(
+          //   icon: IconBadge(
+          //     icon: Icons.notifications,
+          //     size: 22.0,
+          //   ),
+          //   onPressed: (){
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (BuildContext context){
+          //           return Notifications();
+          //         },
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
 
@@ -93,26 +101,26 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
 
-                Positioned(
-                  right: -10.0,
-                  bottom: 3.0,
-                  child: RawMaterialButton(
-                    onPressed: (){},
-                    fillColor: Colors.white,
-                    shape: CircleBorder(),
-                    elevation: 4.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(
-                        isFav
-                            ?Icons.favorite
-                            :Icons.favorite_border,
-                        color: Colors.red,
-                        size: 17,
-                      ),
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   right: -10.0,
+                //   bottom: 3.0,
+                //   child: RawMaterialButton(
+                //     onPressed: (){},
+                //     fillColor: Colors.white,
+                //     shape: CircleBorder(),
+                //     elevation: 4.0,
+                //     child: Padding(
+                //       padding: EdgeInsets.all(5),
+                //       child: Icon(
+                //         isFav
+                //             ?Icons.favorite
+                //             :Icons.favorite_border,
+                //         color: Colors.red,
+                //         size: 17,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
 

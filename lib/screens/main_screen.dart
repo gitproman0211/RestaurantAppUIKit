@@ -24,9 +24,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
   int _page = 0;
-
-
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -57,23 +54,23 @@ class _MainScreenState extends State<MainScreen> {
                );
              },
            ),
-            IconButton(
-              icon: IconBadge(
-                icon: Icons.notifications,
-                size: 22.0,
-                count: 0,
-              ),
-              onPressed: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context){
-                      return Notifications();
-                    },
-                  ),
-                );
-              },
-              tooltip: "Notifications",
-            ),
+            // IconButton(
+            //   icon: IconBadge(
+            //     icon: Icons.notifications,
+            //     size: 22.0,
+            //     count: 0,
+            //   ),
+            //   onPressed: (){
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (BuildContext context){
+            //           return Notifications();
+            //         },
+            //       ),
+            //     );
+            //   },
+            //   tooltip: "Notifications",
+            // ),
           ],
         ),
 

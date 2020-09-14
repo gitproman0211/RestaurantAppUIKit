@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/details.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
-import 'package:restaurant_ui_kit/util/foods.dart';
 import 'package:restaurant_ui_kit/widgets/smooth_star_rating.dart';
 
 
@@ -29,7 +28,6 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
         foods.add(result.data());
       }
       );
-
       setState(() {});
     }
     );

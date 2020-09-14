@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_ui_kit/screens/cart.dart';
 
 import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
@@ -27,6 +28,7 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
   bool isLoading = true;
   bool isFav = false;
   int points=0;
+  int _page = 0;
 
   void initState() {
     // TODO: implement initState
@@ -72,21 +74,32 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
         ),
         elevation: 0.0,
         actions: <Widget>[
-          IconButton(
-            icon: IconBadge(
-              icon: Icons.notifications,
-              size: 22.0,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return Notifications();
-                  },
+          Consumer<CartModel>(
+            builder: (context,cartModel,child){
+              return IconButton(
+                icon: IconBadge(
+                  icon:Icons.shopping_cart,
+                  size: 24.0,
+                  count: cartModel.quantity,
                 ),
+                color: _page == 3
+                    ? Theme.of(context).accentColor
+                    : Theme
+                    .of(context)
+                    .textTheme.caption.color,
+                onPressed: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return CartScreen(cartModel: cartModel);
+                        // return DishesScreen(foods: foods,cart: widget.cart,);
+                      },
+                    ),
+                  );
+                },
               );
             },
-          ),
+          )
         ],
       ),
       body: ListView.builder(
