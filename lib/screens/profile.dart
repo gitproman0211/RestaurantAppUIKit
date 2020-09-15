@@ -116,26 +116,26 @@ class _ProfileState extends State<Profile> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          InkWell(
-                            onTap: (){
-                              FirebaseAuth.instance.signOut();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context){
-                                    return SplashScreen();
-                                  },
-                                ),
-                              );
+                          FlatButton.icon(
+                            color: Colors.red,
+                            label: Text('LogOut'),
+                            icon: Icon(Icons.power_settings_new),
+                            onPressed: (){
+                              setState(() {
+
+                              });
                             },
-                            child: Text("Logout",
-                              style: TextStyle(
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context).accentColor,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
                           ),
+                          FlatButton.icon(
+                            color: Colors.green,
+                            label: Text('Refresh'),
+                            icon: Icon(Icons.refresh),
+                            onPressed: (){
+                             setState(() {
+
+                             });
+                            },
+                          )
                         ],
                       ),
 
