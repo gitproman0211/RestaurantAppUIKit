@@ -50,7 +50,16 @@ class _MainScreenState extends State<MainScreen> {
                      : Theme
                      .of(context)
                      .textTheme.caption.color,
-                 onPressed: ()=>_pageController.jumpToPage(3),
+                 onPressed: (){
+                   Navigator.of(context).push(
+                     MaterialPageRoute(
+                       builder: (BuildContext context) {
+                         return CartScreen(cartModel: cartModel);
+                         // return DishesScreen(foods: foods,cart: widget.cart,);
+                       },
+                     ),
+                   );
+                 },
                );
              },
            ),

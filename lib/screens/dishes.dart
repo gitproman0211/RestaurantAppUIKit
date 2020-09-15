@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_ui_kit/screens/cart.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
@@ -69,7 +70,16 @@ class _DishesScreenState extends State<DishesScreen> {
                     : Theme
                     .of(context)
                     .textTheme.caption.color,
-                onPressed: ()=>_pageController.jumpToPage(3),
+                onPressed: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return CartScreen(cartModel: cartModel);
+                        // return DishesScreen(foods: foods,cart: widget.cart,);
+                      },
+                    ),
+                  );
+                },
               );
             },
           ),

@@ -63,8 +63,10 @@ class _UploaderState extends State<Uploader> {
 
               children: [
                 if (_uploadTask.isComplete)
-                  FlatButton(
-                    child: Icon(Icons.add_photo_alternate),
+                  FlatButton.icon(
+                    color: Colors.green,
+                    label: Text('Back to Profile Page'),
+                    icon: Icon(Icons.person),
                     onPressed: (){
                       changeProfilePicture();
                       Navigator.of(context).push(
@@ -74,12 +76,8 @@ class _UploaderState extends State<Uploader> {
                           },
                         ),
                       );
-                    }
-
+                    },
                   ),
-
-
-
                 if (_uploadTask.isPaused)
                   FlatButton(
                     child: Icon(Icons.play_arrow),
@@ -106,7 +104,8 @@ class _UploaderState extends State<Uploader> {
 
       // Allows user to decide when to start the upload
       return FlatButton.icon(
-        label: Text('Upload to Firebase'),
+        color: Colors.red,
+        label: Text('Upload Picture to Database'),
         icon: Icon(Icons.cloud_upload),
         onPressed: _startUpload,
       );

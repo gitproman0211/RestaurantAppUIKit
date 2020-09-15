@@ -11,15 +11,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map foodItem;
-
   ProductDetails({Key key, @required this.foodItem}) : super(key: key);
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  PageController _pageController;
-  int _page = 0;
+  // PageController _pageController;
+  // int _page = 0;
   // bool isFav = false;
   @override
   Widget build(BuildContext context) {
@@ -46,11 +45,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                   size: 24.0,
                   count: cartModel.quantity,
                 ),
-                color: _page == 3
-                    ? Theme.of(context).accentColor
-                    : Theme
-                    .of(context)
-                    .textTheme.caption.color,
                 onPressed: (){
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -64,21 +58,6 @@ class _ProductDetailsState extends State<ProductDetails> {
               );
             },
           ),
-          // IconButton(
-          //   icon: IconBadge(
-          //     icon: Icons.notifications,
-          //     size: 22.0,
-          //   ),
-          //   onPressed: (){
-          //     Navigator.of(context).push(
-          //       MaterialPageRoute(
-          //         builder: (BuildContext context){
-          //           return Notifications();
-          //         },
-          //       ),
-          //     );
-          //   },
-          // ),
         ],
       ),
 

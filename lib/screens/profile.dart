@@ -28,9 +28,9 @@ class _ProfileState extends State<Profile> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getEmail();
+    getProfile();
   }
-  getEmail()async {
+  getProfile()async {
     DocumentSnapshot doc= await firestoreInstance.collection("users")
         .doc(user.uid).get();
     email=doc.data()["email"];
@@ -99,9 +99,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 5.0),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -114,7 +112,6 @@ class _ProfileState extends State<Profile> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 20.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,7 +148,6 @@ class _ProfileState extends State<Profile> {
 
             Divider(),
             Container(height: 15.0),
-
             Padding(
               padding: EdgeInsets.all(5.0),
               child: Text(
@@ -162,7 +158,6 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-
             ListTile(
               title: Text(
                 "First Name",
@@ -280,36 +275,7 @@ class _ProfileState extends State<Profile> {
                 tooltip: "Edit",
               ),
             ),
-
-//            ListTile(
-//              title: Text(
-//                "Gender",
-//                style: TextStyle(
-//                  fontSize: 17,
-//                  fontWeight: FontWeight.w700,
-//                ),
-//              ),
-//
-//              subtitle: Text(
-//                "Female",
-//              ),
-//            ),
-//
-//            ListTile(
-//              title: Text(
-//                "Date of Birth",
-//                style: TextStyle(
-//                  fontSize: 17,
-//                  fontWeight: FontWeight.w700,
-//                ),
-//              ),
-//
-//              subtitle: Text(
-//                "April 9, 1995",
-//              ),
-//            ),
-
-             MediaQuery.of(context).platformBrightness == Brightness.dark
+            MediaQuery.of(context).platformBrightness == Brightness.dark
                  ? SizedBox()
                  : ListTile(
               title: Text(

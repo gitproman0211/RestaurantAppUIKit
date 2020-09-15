@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -140,7 +141,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Theme.of(context).accentColor,
                 ),
               ),
-              onPressed: (){},
+              onPressed: (){
+                alertDialogForgotPassword(context);
+              },
             ),
           ),
 
@@ -167,7 +170,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         .listen((User user) {
                       if (user == null) {
                         print('User is currently signed out!');
-                      } else {
+                      }
+                      if (!user.emailVerified) {
+                        alertDialogCheckEmail(context);
+                      }else {
                         print('User is signed in!');
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -191,51 +197,6 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Theme.of(context).accentColor,
             ),
           ),
-          //
-          // SizedBox(height: 10.0),
-          // Divider(color: Theme.of(context).accentColor,),
-          // SizedBox(height: 10.0),
-//           Center(
-//             child: Container(
-//               width: MediaQuery.of(context).size.width/2,
-//               child: Row(
-//                 children: <Widget>[
-//                   RawMaterialButton(
-//                     onPressed: (){},
-//                     fillColor: Colors.blue[800],
-//                     shape: CircleBorder(),
-//                     elevation: 4.0,
-//                     child: Padding(
-//                       padding: EdgeInsets.all(15),
-//                       child: Icon(
-//                         FontAwesomeIcons.facebookF,
-//                         color: Colors.white,
-// //              size: 24.0,
-//                       ),
-//                     ),
-//                   ),
-//
-//                   RawMaterialButton(
-//                     onPressed: (){},
-//                     fillColor: Colors.white,
-//                     shape: CircleBorder(),
-//                     elevation: 4.0,
-//                     child: Padding(
-//                       padding: EdgeInsets.all(15),
-//                       child: Icon(
-//                         FontAwesomeIcons.google,
-//                         color: Colors.blue[800],
-// //              size: 24.0,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//
-//           SizedBox(height: 20.0),
-
         ],
       ),
     );
@@ -286,4 +247,37 @@ alertDialogWrongPassword(BuildContext context) {
       );
     },
   );
+}
+
+alertDialogForgotPassword(BuildContext context) async {
+  TextEditingController _textFieldController = TextEditingController();
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('What is your email?'),
+          content: TextField(
+            controller: _textFieldController,
+            textInputAction: TextInputAction.go,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(hintText: "email"),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Cancel'),
+              onPressed: () async{
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text('Submit'),
+              onPressed: () async{
+                await FirebaseAuth.instance.sendPasswordResetEmail(email: _textFieldController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+
+          ],
+        );
+      });
 }

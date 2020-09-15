@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/screens/checkout.dart';
 import 'package:restaurant_ui_kit/screens/redeemDishes.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
+import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/cart_item.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -68,6 +69,20 @@ class _CartScreenState extends State<CartScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.keyboard_backspace,
+          ),
+          onPressed: ()=>Navigator.pop(context),
+        ),
+        centerTitle: true,
+        title: Text(
+          "CART",
+        ),
+        elevation: 0.0,
+      ),
       body: Column(
         children: <Widget>[
           Text(

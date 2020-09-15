@@ -32,7 +32,6 @@ class _ImageCaptureState extends State<ImageCapture> {
   /// Select an image via gallery or camera
   Future<void> _pickImage(ImageSource source) async {
     File selected = await ImagePicker.pickImage(source: source);
-
     setState(() {
       _imageFile = selected;
     });
@@ -52,10 +51,12 @@ class _ImageCaptureState extends State<ImageCapture> {
         child: Row(
           children: <Widget>[
             IconButton(
+              color: Colors.red,
               icon: Icon(Icons.photo_camera),
               onPressed: () => _pickImage(ImageSource.camera),
             ),
             IconButton(
+              color: Colors.green,
               icon: Icon(Icons.photo_library),
               onPressed: () => _pickImage(ImageSource.gallery),
             ),
@@ -73,10 +74,12 @@ class _ImageCaptureState extends State<ImageCapture> {
             Row(
               children: <Widget>[
                 FlatButton(
+                  color: Colors.red,
                   child: Icon(Icons.crop),
                   onPressed: _cropImage,
                 ),
                 FlatButton(
+                  color: Colors.green,
                   child: Icon(Icons.refresh),
                   onPressed: _clear,
                 ),

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,7 +20,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _repasswordController =
       new TextEditingController();
   final firestoreInstance = FirebaseFirestore.instance;
-
+  clearFormFields(){
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _emailController.clear();
+    _passwordController.clear();
+    _repasswordController.clear();
+    // setState(() {
+    //
+    // });
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -74,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   hintText: "First Name",
                   prefixIcon: Icon(
-                    Icons.mail_outline,
+                    Icons.person,
                     color: Colors.black,
                   ),
                   hintStyle: TextStyle(
@@ -118,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   hintText: "Last Name",
                   prefixIcon: Icon(
-                    Icons.mail_outline,
+                    Icons.person,
                     color: Colors.black,
                   ),
                   hintStyle: TextStyle(
@@ -287,6 +297,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     User user = FirebaseAuth.instance.currentUser;
                     if (!user.emailVerified) {
                       await user.sendEmailVerification();
+
                       alertDialogCheckEmail(context);
                     }
                     firestoreInstance
@@ -299,6 +310,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "address": "",
                       "phoneNumber": "",
                       "points":0,
+                      "profilePicture":"",
                     }).then((value) {
                       print("Success");
                     });
@@ -313,54 +325,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   } catch (e) {
                     print(e.toString());
                   }
+                  clearFormFields();
                 }
               },
               color: Theme.of(context).accentColor,
             ),
           ),
-          SizedBox(height: 10.0),
-          Divider(
-            color: Theme.of(context).accentColor,
-          ),
-          SizedBox(height: 10.0),
-          Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width / 2,
-              child: Row(
-                children: <Widget>[
-                  RawMaterialButton(
-                    onPressed: () {},
-                    fillColor: Colors.blue[800],
-                    shape: CircleBorder(),
-                    elevation: 4.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Icon(
-                        FontAwesomeIcons.facebookF,
-                        color: Colors.white,
-                        //              size: 24.0,
-                      ),
-                    ),
-                  ),
-                  RawMaterialButton(
-                    onPressed: () {},
-                    fillColor: Colors.white,
-                    shape: CircleBorder(),
-                    elevation: 4.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(15),
-                      child: Icon(
-                        FontAwesomeIcons.google,
-                        color: Colors.blue[800],
-//              size: 24.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 20.0),
+
         ],
       ),
     );
