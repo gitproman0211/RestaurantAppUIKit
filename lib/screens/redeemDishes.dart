@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/screens/cart.dart';
-
 import 'package:restaurant_ui_kit/screens/notifications.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class RedeemMenuScreen extends StatefulWidget {
   final CartModel cartModel;
-
+  final Function updateState;
   RedeemMenuScreen({
     Key key,
     @required this.cartModel,
+    @required this.updateState
   }) : super(key: key);
 
   @override
@@ -51,10 +50,7 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
   }
   decreasePoints(points){
   widget.cartModel.decreasePoints(points);
- // setState(() {
- //
- // });
-
+  widget.updateState();
   }
 
   @override

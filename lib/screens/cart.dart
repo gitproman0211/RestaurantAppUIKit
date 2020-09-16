@@ -61,7 +61,6 @@ class _CartScreenState extends State<CartScreen>
   }
 
   updateState() {
-    // getPoints();
     setState(() {});
   }
 
@@ -146,7 +145,7 @@ class _CartScreenState extends State<CartScreen>
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return RedeemMenuScreen(cartModel: widget.cartModel);
+                      return RedeemMenuScreen(cartModel: widget.cartModel,updateState: updateState);
                     },
                   ),
                 );
