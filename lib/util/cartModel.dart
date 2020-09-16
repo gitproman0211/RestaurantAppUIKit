@@ -8,6 +8,10 @@ class CartModel with ChangeNotifier {
     cart.add(foodItem);
     notifyListeners();
   }
+  removeFromCart(FoodInCart foodItem) {
+    cart.remove(foodItem);
+    notifyListeners();
+  }
   updatePoints(value){
     points=value;
     notifyListeners();

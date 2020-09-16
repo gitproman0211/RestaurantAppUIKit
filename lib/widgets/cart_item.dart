@@ -123,8 +123,11 @@ class _CartItemState extends State<CartItem> {
                     IconButton(
                       icon: Icon(Icons.remove),
                       onPressed: () {
-                        if(widget.F.quantity!=1){
+                        if(widget.F.quantity>0){
                           widget.cart.decrementQuantity(widget.F);
+                        }
+                        if(widget.F.quantity==0){
+                          widget.cart.removeFromCart(widget.F);
                         }
                         if(widget.F.food["redeem"]){
                           widget.cart.increasePoints(widget.F.food["points"]);
