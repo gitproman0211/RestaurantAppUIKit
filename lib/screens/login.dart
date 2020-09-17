@@ -5,6 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restaurant_ui_kit/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'register.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'social_login.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 
 
@@ -14,12 +17,52 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   final TextEditingController _emailController = new TextEditingController();
 //  final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   dynamic data;
-
-
+  // GoogleSignIn _googleSignIn = GoogleSignIn(
+  //   scopes: [
+  //     'email',
+  //     'https://www.googleapis.com/auth/contacts.readonly',
+  //   ],
+  // );
+  // Future<void> _handleSignIn() async {
+  //   try {
+  //     await _googleSignIn.signIn();
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
+  void facebookLogIn() {
+    signInWithFacebook().then((result) {
+      if (result != null) {
+        print(result);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return MainScreen();
+            },
+          ),
+        );
+      }
+    });
+  }
+  void googleLogIn() {
+    signInWithGoogle().then((result) {
+      if (result != null) {
+        print(result);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return MainScreen();
+            },
+          ),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +238,48 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                   },
               color: Theme.of(context).accentColor,
+            ),
+          ),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width/2,
+              child: Row(
+                children: <Widget>[
+                  RawMaterialButton(
+                    onPressed: (){
+                      signInWithFacebook();
+                    },
+                    fillColor: Colors.blue[800],
+                    shape: CircleBorder(),
+                    elevation: 4.0,
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Icon(
+                        FontAwesomeIcons.facebookF,
+                        color: Colors.white,
+//              size: 24.0,
+                      ),
+                    ),
+                  ),
+
+                  RawMaterialButton(
+                    onPressed: (){
+                      googleLogIn();
+                    },
+                    fillColor: Colors.white,
+                    shape: CircleBorder(),
+                    elevation: 4.0,
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Icon(
+                        FontAwesomeIcons.google,
+                        color: Colors.blue[800],
+//              size: 24.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

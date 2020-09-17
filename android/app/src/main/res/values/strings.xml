@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Squad Up</string>
+
+
+    <string name="facebook_app_id">624829491757485</string>
+
+
+    <string name="fb_login_protocol_scheme">fb624829491757485</string>
+</resources>

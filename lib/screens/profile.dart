@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/providers/app_provider.dart';
 import 'package:restaurant_ui_kit/screens/image_capture.dart';
+import 'package:restaurant_ui_kit/screens/join.dart';
+import 'package:restaurant_ui_kit/screens/login.dart';
 import 'package:restaurant_ui_kit/screens/splash.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +25,7 @@ class _ProfileState extends State<Profile> {
   String profilePicture="";
   User user = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -42,6 +45,9 @@ class _ProfileState extends State<Profile> {
     setState(() {
 
     });
+  }
+  signOut() async {
+    await auth.signOut();
   }
   @override
   Widget build(BuildContext context) {
@@ -121,9 +127,14 @@ class _ProfileState extends State<Profile> {
                             label: Text('LogOut'),
                             icon: Icon(Icons.power_settings_new),
                             onPressed: (){
-                              setState(() {
-
-                              });
+                                  signOut();
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context){
+                                        return JoinApp();
+                                      },
+                                    ),
+                                  );
                             },
                           ),
                           FlatButton.icon(

@@ -25,7 +25,7 @@ class _CheckoutState extends State<Checkout> {
   String address="";
   User user = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
-  final TextEditingController _couponlControl = new TextEditingController();
+
   int _radioValue = 0;
   String paymentMode="CARD";
   // int points=0;
@@ -251,6 +251,7 @@ class _CheckoutState extends State<Checkout> {
                     onPressed: (){
                         uploadOrderToDatabase(widget.myList);
                         updatePointsToFirebase();
+                        widget.cartModel.cart=[];
                         alertDialogPlaceOrder(context);
                     },
                   ),
