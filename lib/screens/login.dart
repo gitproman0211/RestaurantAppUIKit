@@ -22,36 +22,11 @@ class _LoginScreenState extends State<LoginScreen> {
 //  final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   dynamic data;
-  // GoogleSignIn _googleSignIn = GoogleSignIn(
-  //   scopes: [
-  //     'email',
-  //     'https://www.googleapis.com/auth/contacts.readonly',
-  //   ],
-  // );
-  // Future<void> _handleSignIn() async {
-  //   try {
-  //     await _googleSignIn.signIn();
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
-  void facebookLogIn() {
-    signInWithFacebook().then((result) {
-      if (result != null) {
-        print(result);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return MainScreen();
-            },
-          ),
-        );
-      }
-    });
-  }
+
   void googleLogIn() {
     signInWithGoogle().then((result) {
       if (result != null) {
+        print("google sign in details");
         print(result);
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -248,6 +223,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   RawMaterialButton(
                     onPressed: (){
                       signInWithFacebook();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context){
+                            return MainScreen();
+                          },
+                        ),
+                      );
                     },
                     fillColor: Colors.blue[800],
                     shape: CircleBorder(),
