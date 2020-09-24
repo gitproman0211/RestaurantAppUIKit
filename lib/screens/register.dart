@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               top: 25.0,
             ),
             child: Text(
-              "Create an account",
+              "Crea Una Cuenta",
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w700,
@@ -82,7 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "First Name",
+                  hintText: "Nombre de pila",
                   prefixIcon: Icon(
                     Icons.person,
                     color: Colors.black,
@@ -126,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "Last Name",
+                  hintText: "Apellido",
                   prefixIcon: Icon(
                     Icons.person,
                     color: Colors.black,

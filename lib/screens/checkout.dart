@@ -14,7 +14,8 @@ class Checkout extends StatefulWidget {
   final int total;
   final List<FoodInCart> myList;
   final CartModel cartModel;
-  Checkout({Key key, @required this.total,@required this.myList,@required this.cartModel}) : super(key: key);
+  final Map selectedRestaurant;
+  Checkout({Key key, @required this.total,@required this.myList,@required this.cartModel,@required this.selectedRestaurant}) : super(key: key);
   @override
   _CheckoutState createState() => _CheckoutState();
 }
@@ -27,6 +28,7 @@ class _CheckoutState extends State<Checkout> {
   final firestoreInstance = FirebaseFirestore.instance;
 
   int _radioValue = 0;
+  int deliveryCharge=10;
   String paymentMode="CARD";
   // int points=0;
 
@@ -49,7 +51,9 @@ class _CheckoutState extends State<Checkout> {
   void initState() {
     super.initState();
     getNameAddress();
+
   }
+
   getNameAddress()async {
     DocumentSnapshot doc= await firestoreInstance.collection("users")
         .doc(user.uid).get();
@@ -60,21 +64,27 @@ class _CheckoutState extends State<Checkout> {
 
     });
   }
-  uploadOrderToDatabase(myList){
-    List<String> order=[];
-    for(int i=0;i<myList.length;i++){
-      order.add(myList[i].food["name"]);
+  uploadOrderToDatabase() async{
+    List<Map> order=[];
+    for(int i=0;i<widget.myList.length;i++){
+      order.add({"name":widget.myList[i].food["name"],"quantity":widget.myList[i].quantity});
     }
    print(order);
     User user = FirebaseAuth.instance.currentUser;
     final databaseReference = FirebaseFirestore.instance;
-    databaseReference.collection('users').doc(user.uid).collection('orders').doc().set({
+    DocumentReference documentReference = FirebaseFirestore.instance.collection('orders').doc();
+    await documentReference.set({
       "order": order,
       "paymentMode": paymentMode.toString(),
-      "total": widget.total,
-    }).then((value) {
-      print("Order uploaded to firebase");
+      "total": widget.total+deliveryCharge,
+      "restaurantId":widget.selectedRestaurant["id"],
+      "userId":user.uid,
+      "status":"placed",
+      "orderId":documentReference.id,
+      "timestamp":DateTime.now().toIso8601String(),
     });
+    String orderId=documentReference.id;
+    print("Order $orderId uploaded to firebase");
   }
   updatePointsToFirebase(){
     User user = FirebaseAuth.instance.currentUser;
@@ -134,10 +144,10 @@ class _CheckoutState extends State<Checkout> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Shipping Address",
+                  "Delivery Address",
                   style: TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
 
@@ -165,14 +175,35 @@ class _CheckoutState extends State<Checkout> {
                 ),
               ),
             ),
+            SizedBox(height: 10.0),
             Text(
-              "Payment Method",
+              "Restaurant Address",
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            Text(
+              widget.selectedRestaurant["name"],
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
               ),
             ),
-
+            Text(
+              widget.selectedRestaurant["address"],
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Text(
+              "Payment Method",
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -209,27 +240,24 @@ class _CheckoutState extends State<Checkout> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "Total",
+                        "Total=${widget.total}",
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-
                       Text(
-                        "\$"+widget.total.toString(),
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900,
-                          color: Theme.of(context).accentColor,
-                        ),
-                      ),
-
-                      Text(
-                        "Delivery charges included",
+                        "Delivery charges = \$+$deliveryCharge",
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
+                        "TOTAL BILL AMOUNT = \$${widget.total+deliveryCharge}",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ],
@@ -249,10 +277,16 @@ class _CheckoutState extends State<Checkout> {
                       ),
                     ),
                     onPressed: (){
-                        uploadOrderToDatabase(widget.myList);
-                        updatePointsToFirebase();
-                        widget.cartModel.cart=[];
-                        alertDialogPlaceOrder(context);
+                        if(address.length!=0){
+                          uploadOrderToDatabase();
+                          updatePointsToFirebase();
+                          widget.cartModel.cart=[];
+                          alertDialogPlaceOrder(context);
+                        }
+                        else{
+                          alertDialogEnterAddress(context);
+                        }
+
                     },
                   ),
                 ),
@@ -310,6 +344,50 @@ class _CheckoutState extends State<Checkout> {
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(hintText: "Enter New Address"),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('Submit'),
+                onPressed: () {
+                  firestoreInstance
+                      .collection("users")
+                      .doc(user.uid)
+                      .update({
+                    "address": _textFieldController.text,
+                  }).then((value) {
+                    print("Success");
+                  });
+                  address=_textFieldController.text;
+                  Navigator.of(context).pop();
+
+                },
+              )
+            ],
+          );
+        });
+  }
+  alertDialogEnterAddress(BuildContext context) async {
+    TextEditingController _textFieldController = TextEditingController();
+    User user = FirebaseAuth.instance.currentUser;
+    final firestoreInstance = FirebaseFirestore.instance;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Shipping Address cannot be Empty'),
+            content: TextField(
+              maxLines: 3,
+              controller: _textFieldController,
+              textInputAction: TextInputAction.go,
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.words,
+              decoration: InputDecoration(hintText: "Enter Address"),
             ),
             actions: <Widget>[
               new FlatButton(

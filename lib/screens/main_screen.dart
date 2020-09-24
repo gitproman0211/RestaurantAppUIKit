@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_ui_kit/screens/cart.dart';
@@ -13,17 +14,25 @@ import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:provider/provider.dart';
 
-
-
-
 class MainScreen extends StatefulWidget {
+  MainScreen({Key key}) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
+  User user = FirebaseAuth.instance.currentUser;
+  final firestoreInstance = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   PageController _pageController;
   int _page = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pageController = PageController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -196,13 +205,6 @@ class _MainScreenState extends State<MainScreen> {
   void navigationTapped(int page) {
     _pageController.jumpToPage(page);
   }
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
   @override
   void dispose() {
     super.dispose();

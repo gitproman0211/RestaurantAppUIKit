@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/screens/checkout.dart';
 import 'package:restaurant_ui_kit/screens/redeemDishes.dart';
+import 'package:restaurant_ui_kit/screens/restaurants.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:restaurant_ui_kit/widgets/cart_item.dart';
@@ -24,6 +25,7 @@ class _CartScreenState extends State<CartScreen>
   List<FoodInCart> myList = [];
    int points=0;
   bool redeemPointsButton=true;
+
   final firestoreInstance = FirebaseFirestore.instance;
   final ScrollController _scrollController=ScrollController();
   @override
@@ -161,19 +163,22 @@ class _CartScreenState extends State<CartScreen>
 
           RaisedButton(
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return Checkout(cartModel: widget.cartModel,total:calculateTotal(),myList: myList);
-                  },
-                ),
-              );
+              if(myList.isNotEmpty){
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return Restaurants(cartModel: widget.cartModel,total:calculateTotal(),myList: myList);
+                    },
+                  ),
+                );
+              }
+
             },
             textColor: Colors.white,
-            color: Colors.red,
+            color: myList.isEmpty?Colors.grey:Colors.red,
             padding: const EdgeInsets.all(8.0),
             child: new Text(
-              "CHECKOUT",
+              "Choose Restaurant",
             ),
           ),
         ],

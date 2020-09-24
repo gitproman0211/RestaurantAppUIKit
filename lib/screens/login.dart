@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = new TextEditingController();
 //  final TextEditingController _usernameController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
+  String firstName="";
   dynamic data;
 
   void googleLogIn() {
@@ -193,6 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         alertDialogCheckEmail(context);
                       }else {
                         print('User is signed in!');
+
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (BuildContext context){
@@ -215,6 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Theme.of(context).accentColor,
             ),
           ),
+          SizedBox(height: 30.0),
           Center(
             child: Container(
               width: MediaQuery.of(context).size.width/2,

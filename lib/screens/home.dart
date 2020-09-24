@@ -54,9 +54,9 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
         }
       });
     }
-    print("List of Categories:");
+    // print("List of Categories:");
     categories.sort();
-    print(categories);
+    // print(categories);
     return categories;
   }
 
@@ -68,7 +68,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
       }
       );
       categories = getCategories(foods);
-      print(foods);
+      // print(foods);
       isLoading = false;
       setState(() {});
     }
