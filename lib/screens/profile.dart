@@ -1,13 +1,15 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_ui_kit/providers/app_provider.dart';
-import 'package:restaurant_ui_kit/screens/image_capture.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:restaurant_ui_kit/screens/join.dart';
 import 'package:restaurant_ui_kit/screens/login.dart';
 import 'package:restaurant_ui_kit/screens/splash.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,6 +28,10 @@ class _ProfileState extends State<Profile> {
   User user = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
+  File _image;
+  final FirebaseStorage _storage =
+  FirebaseStorage(storageBucket: 'gs://restaurantapp-65d0e.appspot.com');
+  StorageUploadTask _uploadTask;
 
   @override
   void initState() {
@@ -49,6 +55,79 @@ class _ProfileState extends State<Profile> {
   signOut() async {
     await auth.signOut();
   }
+  _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    );
+
+    setState(() {
+      _image = image;
+    });
+    String fileName = DateTime.now().toString();
+    fileName = fileName.trim();
+    _uploadTask = _storage.ref().child(fileName).putFile(_image);
+    String docUrl = await (await _uploadTask.onComplete).ref.getDownloadURL();
+    firestoreInstance
+        .collection("users")
+        .doc(user.uid)
+        .update({
+      "profilePicture": docUrl,
+    }).then((value) {
+      print("Successfully uploaded profile picture to Firebase");
+    });
+  }
+
+  _imgFromGallery() async {
+    File image = await  ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    );
+
+    setState(() {
+      _image = image;
+    });
+    String fileName = DateTime.now().toString();
+    fileName = fileName.trim();
+    _uploadTask = _storage.ref().child(fileName).putFile(_image);
+    String docUrl = await (await _uploadTask.onComplete).ref.getDownloadURL();
+    firestoreInstance
+        .collection("users")
+        .doc(user.uid)
+        .update({
+      "profilePicture": docUrl,
+    }).then((value) {
+      print("Successfully uploaded profile picture to Firebase");
+    });
+  }
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,29 +141,35 @@ class _ProfileState extends State<Profile> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                  child:  CircularProfileAvatar(
-                    profilePicture, //sets image path, it should be a URL string. default value is empty string, if path is empty it will display only initials
-                    radius: 50, // sets radius, default 50.0
-                    backgroundColor: Colors.transparent, // sets background color, default Colors.white
-                    borderWidth: 10,  // sets border, default 0.0
-                    initialsText: Text(
-                      "",
-                      style: TextStyle(fontSize: 40, color: Colors.white),
-                    ),  // sets initials text, set your own style, default Text('')
-                    borderColor: Colors.brown, // sets border color, default Colors.white
-                    elevation: 5.0, // sets elevation (shadow of the profile picture), default value is 0.0
-                    foregroundColor: Colors.brown.withOpacity(0.5), //sets foreground colour, it works if showInitialTextAbovePicture = true , default Colors.transparent
-                    cacheImage: true, // allow widget to cache image against provided url
+                  child:GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context){
-                            return ImageCapture();
-                          },
+                      _showPicker(context);
+                    },
+                    child: CircleAvatar(
+                      radius: 55,
+                      backgroundColor: Color(0xffFDCF09),
+                      child: _image != null
+                          ? ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.file(
+                          _image,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.fitHeight,
                         ),
-                      );
-                    }, // sets on tap
-                    showInitialTextAbovePicture: true, // setting it true will show initials text above profile picture, default false
+                      )
+                          : Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(50)),
+                        width: 100,
+                        height: 100,
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                    ),
                   )
       ),
 
