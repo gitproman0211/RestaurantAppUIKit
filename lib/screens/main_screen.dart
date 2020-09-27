@@ -6,6 +6,7 @@ import 'package:restaurant_ui_kit/screens/cart.dart';
 import 'package:restaurant_ui_kit/screens/favorite_screen.dart';
 import 'package:restaurant_ui_kit/screens/home.dart';
 import 'package:restaurant_ui_kit/screens/notifications.dart';
+import 'package:restaurant_ui_kit/screens/orders.dart';
 import 'package:restaurant_ui_kit/screens/profile.dart';
 import 'package:restaurant_ui_kit/screens/search.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
@@ -101,11 +102,7 @@ class _MainScreenState extends State<MainScreen> {
             Home(),
             FavoriteScreen(),
             SearchScreen(),
-            Consumer<CartModel>(
-                builder: (context,cartModel,child){
-                  return CartScreen(cartModel: cartModel);
-                }
-            ),
+            Orders(),
             Profile(),
           ],
         ),
@@ -156,18 +153,18 @@ class _MainScreenState extends State<MainScreen> {
                 onPressed: ()=>_pageController.jumpToPage(2),
               ),
 
-              // IconButton(
-              //   icon: Icon(
-              //     Icons.shopping_cart,
-              //     size: 24.0,
-              //   ),
-              //   color: _page == 3
-              //       ? Theme.of(context).accentColor
-              //       : Theme
-              //       .of(context)
-              //       .textTheme.caption.color,
-              //   onPressed: ()=>_pageController.jumpToPage(3),
-              // ),
+              IconButton(
+                icon: Icon(
+                  Icons.book,
+                  size: 24.0,
+                ),
+                color: _page == 3
+                    ? Theme.of(context).accentColor
+                    : Theme
+                    .of(context)
+                    .textTheme.caption.color,
+                onPressed: ()=>_pageController.jumpToPage(3),
+              ),
 
               IconButton(
                 icon: Icon(
