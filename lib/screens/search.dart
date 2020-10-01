@@ -107,7 +107,7 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage('${items[index]["image"]}')),
                     title: Text('${items[index]["name"]}'),
-                    trailing:Text('\$'+'${items[index]["price"]}'),
+                    trailing:Text('₲'+'${items[index]["price"]}'),
                       onTap: (){
                         Navigator.of(context).push(
                           MaterialPageRoute(

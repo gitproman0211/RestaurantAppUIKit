@@ -118,7 +118,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    "\$ "+widget.foodItem["price"].toString(),
+                    "₲ "+widget.foodItem["price"].toString(),
                     style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w900,

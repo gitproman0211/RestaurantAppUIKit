@@ -208,7 +208,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                                 radius: 40,
                                 backgroundImage: NetworkImage('${foods[index]["image"]}')),
                             title: Text('${foods[index]["name"]}'),
-                            trailing:Text('\$'+'${foods[index]["price"]}'),
+                            trailing:Text('₲'+'${foods[index]["price"]}'),
                             onTap: (){
                               Navigator.of(context).push(
                                 MaterialPageRoute(
