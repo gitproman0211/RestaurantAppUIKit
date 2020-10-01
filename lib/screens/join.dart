@@ -49,10 +49,10 @@ class _JoinAppState extends State<JoinApp> with SingleTickerProviderStateMixin{
           ),
           tabs: <Widget>[
             Tab(
-              text: "Login",
+              text: "Iniciar sesión",//Login
             ),
             Tab(
-              text: "Register",
+              text: "Registrarse",//Register
             ),
           ],
         ),

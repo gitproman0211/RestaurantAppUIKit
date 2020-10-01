@@ -87,7 +87,7 @@ class _CartScreenState extends State<CartScreen>
       body: Column(
         children: <Widget>[
           Text(
-            "Number Of Items= ${myList.length}",
+            "Número de items= ${myList.length}",//Number Of items
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15,
@@ -128,14 +128,14 @@ class _CartScreenState extends State<CartScreen>
             ),
           ),
           Text(
-            "GRAND TOTAL= \$ ${calculateTotal()}",
+            "GRAN TOTAL= \$ ${calculateTotal()}",//GRAND TOTAL
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w800,
             ),
           ),
           Text(
-            "Points Available To Redeem = ${widget.cartModel.points}",
+            "Puntos disponibles para canjear= ${widget.cartModel.points}",//Points Available To Redeem
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w300,
@@ -157,7 +157,7 @@ class _CartScreenState extends State<CartScreen>
             color: redeemPointsButton?Colors.red:Colors.grey,
             padding: const EdgeInsets.all(8.0),
             child: new Text(
-              "REDEEM POINTS",
+              "CANJEAR PUNTOS",//REDEEM POINTS
             ),
           ),
 
@@ -178,7 +178,7 @@ class _CartScreenState extends State<CartScreen>
             color: myList.isEmpty?Colors.grey:Colors.red,
             padding: const EdgeInsets.all(8.0),
             child: new Text(
-              "Choose Restaurant",
+              "Elija Restaurante",//Choose Restaurant
             ),
           ),
         ],

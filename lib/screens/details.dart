@@ -33,7 +33,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
         centerTitle: true,
         title: Text(
-          "Item Details",
+          "detalles del artículo",//Item Details
         ),
         elevation: 0.0,
         actions: <Widget>[
@@ -134,7 +134,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             SizedBox(height: 20.0),
 
             Text(
-              "Product Description",
+              "Descripción del producto",//Product Description
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
@@ -160,7 +160,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           builder:(context,cartModel,child){
             return RaisedButton(
               child: Text(
-                "ADD TO CART",
+                "AÑADIR AL CARRITO",//ADD TO CART
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -168,12 +168,12 @@ class _ProductDetailsState extends State<ProductDetails> {
               color: Theme.of(context).accentColor,
               onPressed: (){
                 if(cartModel.cart.contains(FoodInCart(widget.foodItem))){
-                  Fluttertoast.showToast(msg: "Item Already Present In Cart");
+                  Fluttertoast.showToast(msg: "El artículo ya está presente en el carrito");//Item Already Present In Cart
                 }
                 else{
 
                   cartModel.addToCart(FoodInCart(widget.foodItem));
-                  Fluttertoast.showToast(msg: "Item Added To Cart");
+                  Fluttertoast.showToast(msg: "Artículo agregado al carrito");//Item Added To Cart
                 }
                 setState(() {
 

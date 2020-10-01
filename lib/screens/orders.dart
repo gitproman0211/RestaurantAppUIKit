@@ -20,7 +20,7 @@ class _OrdersState extends State<Orders> {
   List<Map> restaurants=[];
   List<Map> orders = [];
   Map restaurantMap=new Map();
-  bool isLoading=true;
+  bool isLoading;
 
   fetchOrders() async {
     var ordersRef = FirebaseFirestore.instance.collection("orders");
@@ -73,6 +73,7 @@ class _OrdersState extends State<Orders> {
   @override
   void initState() {
     // TODO: implement initState
+    isLoading=true;
     super.initState();
     fetchRestaurantNames();
     fetchOrders();
@@ -84,15 +85,15 @@ class _OrdersState extends State<Orders> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.keyboard_backspace,
-          ),
-          onPressed: ()=>Navigator.pop(context),
-        ),
+        // leading: IconButton(
+        //   icon: Icon(
+        //     Icons.keyboard_backspace,
+        //   ),
+        //   onPressed: ()=>Navigator.pop(context),
+        // ),
         centerTitle: true,
         title: Text(
-          "ALL ORDERS",
+          "HISTORIAL DE PEDIDOS",//ORDER HISTORY
         ),
         elevation: 0.0,
         actions: <Widget>[
@@ -111,49 +112,45 @@ class _OrdersState extends State<Orders> {
         itemBuilder: (context, index) {
           return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
-                margin: const EdgeInsets.all(10.0),
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.red, //                   <--- border color
-                    width: 5.0,
-                  ),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Text("Restaurant Name:"+restaurantMap[orders[index]["restaurantId"]],
-                        style: TextStyle(color: Colors.black)),
-                    Column(
-                      children: List.generate(orders[index]["order"].length, (i) {
-                        return Container(
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text("Name :"+orders[index]["order"][i]["name"],
-                                      style: TextStyle(color: Colors.black)),
-                                  Text("Quantity :"+orders[index]["order"][i]["quantity"].toString(),
-                                      style: TextStyle(color: Colors.black)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      }
+              child: Card(
+                color: Colors.blue[100],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text("Nombre del restaurante:"+restaurantMap[orders[index]["restaurantId"]],
+                          style: TextStyle(color: Colors.black)),
+                      Column(
+                        children: List.generate(orders[index]["order"].length, (i) {
+                          return Container(
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text("Nombre :"+orders[index]["order"][i]["name"],
+                                        style: TextStyle(color: Colors.black)),
+                                    Text("Cantidad :"+orders[index]["order"][i]["quantity"].toString(),
+                                        style: TextStyle(color: Colors.black)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        ),
                       ),
-                    ),
-                    Text("Time:"+orders[index]["timestamp"].toString(),
-                        style: TextStyle(color: Colors.red,)),
-                    Text("PaymentMode:"+orders[index]["paymentMode"],
-                        style: TextStyle(color: Colors.green)),
-                    Text("Total:"+orders[index]["total"].toString(),
-                        style: TextStyle(color: Colors.black)),
-                    Text("Status:"+orders[index]["status"],
-                        style: TextStyle(color: Colors.black)),
+                      Text("Tiempo de la orden:"+orders[index]["timestamp"].toString(),//Time
+                          style: TextStyle(color: Colors.red,)),
+                      Text("Modo de pago:"+orders[index]["paymentMode"],//Payment Mode
+                          style: TextStyle(color: Colors.green)),
+                      Text("Total:"+orders[index]["total"].toString(),
+                          style: TextStyle(color: Colors.black)),
+                      Text("Estado:"+orders[index]["status"],
+                          style: TextStyle(color: Colors.black)),
 
-                  ],
+                    ],
+                  ),
                 ),
               ));
         },

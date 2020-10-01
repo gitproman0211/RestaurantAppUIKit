@@ -54,7 +54,7 @@ class _RestaurantsState extends State<Restaurants> {
   alertDialogRestaurantNotSelected(BuildContext context) {
     // This is the ok button
     Widget ok = FlatButton(
-      child: Text("Retry"),
+      child: Text("Rever"),//Rever
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -65,7 +65,7 @@ class _RestaurantsState extends State<Restaurants> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Error"),
-          content: Text("Restaurant Not Selected"),
+          content: Text("Restaurante no seleccionado"),// Restaurant Not Selected
           actions: [
             ok,
           ],
@@ -89,7 +89,7 @@ class _RestaurantsState extends State<Restaurants> {
         ),
         centerTitle: true,
         title: Text(
-          "Restaurants List ",
+          "Lista de restaurantes",// Restaurants List
         ),
         elevation: 0.0,
         actions: <Widget>[
@@ -154,7 +154,7 @@ class _RestaurantsState extends State<Restaurants> {
                           ),
                           SizedBox(height: 10.0),
                           Text(
-                            "Restaurant Address",
+                            "Dirección de restaurantes",//Restaurant Address
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w300,
@@ -185,7 +185,7 @@ class _RestaurantsState extends State<Restaurants> {
             child: FlatButton(
               color: Theme.of(context).accentColor,
               child: Text(
-                "Proceed".toUpperCase(),
+                "Continuar".toUpperCase(),//Proceed
                 style: TextStyle(
                   color: Colors.white,
                 ),

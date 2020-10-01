@@ -66,7 +66,7 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
         ),
         centerTitle: true,
         title: Text(
-          "Points Available To Redeem "+widget.cartModel.points.toString(),
+          "Puntos disponibles para canjear "+widget.cartModel.points.toString(),
         ),
         elevation: 0.0,
         actions: <Widget>[
@@ -143,7 +143,7 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          "Points:  "+redeemFoods[index]["points"].toString(),
+                          "Puntos:  "+redeemFoods[index]["points"].toString(),
                           style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.w900,
@@ -156,7 +156,7 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
                   ),
                   SizedBox(height: 10.0),
                   Text(
-                    "Product Description",
+                    "Descripción del producto",//Product Description
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -177,7 +177,7 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
                       builder:(context,cartModel,child){
                         return RaisedButton(
                           child: Text(
-                            "ADD TO CART",
+                            "Añadir al carrito",//ADD TO CART
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -185,13 +185,13 @@ class _RedeemMenuScreenState extends State<RedeemMenuScreen> {
                           color: Theme.of(context).accentColor,
                           onPressed: (){
                             if(cartModel.cart.contains(FoodInCart(redeemFoods[index]))){
-                              Fluttertoast.showToast(msg: "Item Already Present In Cart");
+                              Fluttertoast.showToast(msg: "El artículo ya está presente en el carrito");//Item already present in Cart
                               //points will not decrease
                             }
                             else{
 
                               cartModel.addToCart(FoodInCart(redeemFoods[index]));
-                              Fluttertoast.showToast(msg: "Item Added To Cart");
+                              Fluttertoast.showToast(msg: "Artículo agregado al carrito");//Item Added To Cart
                               //points will decrease
                               decreasePoints(redeemFoods[index]["points"]);
                             }

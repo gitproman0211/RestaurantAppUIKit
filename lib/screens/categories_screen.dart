@@ -71,7 +71,7 @@ print("count=");
         ),
         centerTitle: true,
         title: Text(
-          "Categories",
+          "Categorías",//Categories
         ),
         elevation: 0.0,
         actions: <Widget>[

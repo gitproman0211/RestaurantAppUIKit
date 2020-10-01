@@ -105,7 +105,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "Dishes",
+                        "Platos",//Dishes
                         style: TextStyle(
                           fontSize: 23,
                           fontWeight: FontWeight.w800,
@@ -113,7 +113,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                       ),
                       FlatButton(
                         child: Text(
-                          "View More",
+                          "Ver más",//View More
                           style: TextStyle(
 //                      fontSize: 22,
 //                      fontWeight: FontWeight.w800,
@@ -162,7 +162,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                   ),
                   SizedBox(height: 20.0),
                   Text(
-                    "Food Categories",
+                    "Categorías de alimentos",//Food Categories
                     style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.w800,
@@ -189,7 +189,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                   ),
                   SizedBox(height: 40.0),
                   Text(
-                    "Popular Items",
+                    "Artículos populares",//Popular Items
                     style: TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.w800,

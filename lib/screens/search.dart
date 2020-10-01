@@ -13,6 +13,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClientMixin<SearchScreen>{
   final TextEditingController editingController = TextEditingController();
   final firestoreInstance = FirebaseFirestore.instance;
+
   List<Map> foods = [];
   List<Map> items=[];
   // searchMenu(searchText){
@@ -88,8 +89,8 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
               },
               controller: editingController,
               decoration: InputDecoration(
-                  labelText: "Search",
-                  hintText: "Search",
+                  labelText: "Buscar",
+                  hintText: "Buscar",//Search
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),

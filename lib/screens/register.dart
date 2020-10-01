@@ -214,7 +214,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "Password",
+                  hintText: "contraseña",//Password
                   prefixIcon: Icon(
                     Icons.lock_outline,
                     color: Colors.black,
@@ -259,7 +259,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "Re-Enter Password",
+                  hintText: "reingresar contraseña",// Re-enter Password
                   prefixIcon: Icon(
                     Icons.lock_outline,
                     color: Colors.black,
@@ -279,7 +279,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             height: 50.0,
             child: RaisedButton(
               child: Text(
-                "Register".toUpperCase(),
+                "registro".toUpperCase(),//Register
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -341,7 +341,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 alertDialogPasswordsDontMatch(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
-    child: Text("Retry"),
+    child: Text("reintento"),//Retry
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -352,7 +352,7 @@ alertDialogPasswordsDontMatch(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text("Error"),
-        content: Text("Passwords Don't Match"),
+        content: Text("Las contraseñas no coinciden"),//Passwords dont match
         actions: [
           ok,
         ],
@@ -365,7 +365,7 @@ alertDialogPasswordsDontMatch(BuildContext context) {
 alertDialogUserAlreadyExists(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
-    child: Text("Login"),
+    child: Text("Iniciar sesión"),//Login
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -375,8 +375,8 @@ alertDialogUserAlreadyExists(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("User Already Exists"),
-        content: Text("Please Login"),
+        title: Text("El usuario ya existe"),//User already exists
+        content: Text("Por favor Iniciar sesión"),//Please Login
         actions: [
           ok,
         ],
@@ -389,7 +389,7 @@ alertDialogUserAlreadyExists(BuildContext context) {
 alertDialogWeakPassword(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
-    child: Text("Retry"),
+    child: Text("Rever"),//Retry
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -399,8 +399,8 @@ alertDialogWeakPassword(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Weak Password"),
-        content: Text("Password Length should be Minimum 6 characters"),
+        title: Text("Contraseña debil"),//Weak Password
+        content: Text("La longitud de la contraseña debe tener un mínimo de 6 caracteres"),
         actions: [
           ok,
         ],
@@ -413,7 +413,7 @@ alertDialogWeakPassword(BuildContext context) {
 alertDialogInvalidEmail(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
-    child: Text("Retry"),
+    child: Text("Rever"),
     onPressed: () {
       Navigator.of(context).pop();
     },
@@ -423,8 +423,8 @@ alertDialogInvalidEmail(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Invalid Email "),
-        content: Text("Email Address is badly formatted"),
+        title: Text("Email inválido"),//Invalid Email
+        content: Text("La dirección de correo electrónico tiene un formato incorrecto"),//Email Address is badly formatted
         actions: [
           ok,
         ],
@@ -447,8 +447,8 @@ alertDialogCheckEmail(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Verification Email Sent "),
-        content: Text("Please check your Email to verify your Account"),
+        title: Text("El mensaje de verificación ha sido enviado "),//Verification Email Sent
+        content: Text("Por favor revise su correo electrónico para verificar su cuenta"),//Please check your Email to verify your Account
         actions: [
           ok,
         ],

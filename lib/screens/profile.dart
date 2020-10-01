@@ -28,7 +28,6 @@ class _ProfileState extends State<Profile> {
   User user = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
-  File _image;
   final FirebaseStorage _storage =
   FirebaseStorage(storageBucket: 'gs://restaurantapp-65d0e.appspot.com');
   StorageUploadTask _uploadTask;
@@ -48,6 +47,7 @@ class _ProfileState extends State<Profile> {
     phoneNumber=doc.data()["phoneNumber"];
     address=doc.data()["address"];
     profilePicture=doc.data()["profilePicture"];
+
     setState(() {
 
     });
@@ -59,13 +59,9 @@ class _ProfileState extends State<Profile> {
     File image = await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50
     );
-
-    setState(() {
-      _image = image;
-    });
     String fileName = DateTime.now().toString();
     fileName = fileName.trim();
-    _uploadTask = _storage.ref().child(fileName).putFile(_image);
+    _uploadTask = _storage.ref().child(fileName).putFile(image);
     String docUrl = await (await _uploadTask.onComplete).ref.getDownloadURL();
     firestoreInstance
         .collection("users")
@@ -74,6 +70,10 @@ class _ProfileState extends State<Profile> {
       "profilePicture": docUrl,
     }).then((value) {
       print("Successfully uploaded profile picture to Firebase");
+      getProfile();
+      setState(() {
+
+      });
     });
   }
 
@@ -81,13 +81,9 @@ class _ProfileState extends State<Profile> {
     File image = await  ImagePicker.pickImage(
         source: ImageSource.gallery, imageQuality: 50
     );
-
-    setState(() {
-      _image = image;
-    });
     String fileName = DateTime.now().toString();
     fileName = fileName.trim();
-    _uploadTask = _storage.ref().child(fileName).putFile(_image);
+    _uploadTask = _storage.ref().child(fileName).putFile(image);
     String docUrl = await (await _uploadTask.onComplete).ref.getDownloadURL();
     firestoreInstance
         .collection("users")
@@ -96,6 +92,10 @@ class _ProfileState extends State<Profile> {
       "profilePicture": docUrl,
     }).then((value) {
       print("Successfully uploaded profile picture to Firebase");
+      getProfile();
+      setState(() {
+
+     });
     });
   }
   void _showPicker(context) {
@@ -108,14 +108,14 @@ class _ProfileState extends State<Profile> {
                 children: <Widget>[
                   new ListTile(
                       leading: new Icon(Icons.photo_library),
-                      title: new Text('Photo Library'),
+                      title: new Text('Librería fotográfica'),
                       onTap: () {
                         _imgFromGallery();
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
                     leading: new Icon(Icons.photo_camera),
-                    title: new Text('Camera'),
+                    title: new Text('Cámara'),
                     onTap: () {
                       _imgFromCamera();
                       Navigator.of(context).pop();
@@ -137,25 +137,23 @@ class _ProfileState extends State<Profile> {
         child: ListView(
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 10.0, right: 10.0),
                   child:GestureDetector(
                     onTap: () {
-                      _showPicker(context);
+                       _showPicker(context);
                     },
                     child: CircleAvatar(
                       radius: 55,
                       backgroundColor: Color(0xffFDCF09),
-                      child: _image != null
+                      child: profilePicture!=""
                           ? ClipRRect(
                         borderRadius: BorderRadius.circular(50),
-                        child: Image.file(
-                          _image,
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.fitHeight,
+                        child: Image.network(
+                          profilePicture,
+                          fit: BoxFit.cover,
                         ),
                       )
                           : Container(
@@ -171,73 +169,21 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   )
-      ),
-
-
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            firstName+" "+lastName,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            email,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          FlatButton.icon(
-                            color: Colors.red,
-                            label: Text('LogOut'),
-                            icon: Icon(Icons.power_settings_new),
-                            onPressed: (){
-                                  signOut();
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context){
-                                        return JoinApp();
-                                      },
-                                    ),
-                                  );
+                   ),
+                FlatButton.icon(
+                  color: Colors.red,
+                  label: Text('Cerrar sesión'),//Logout
+                  icon: Icon(Icons.power_settings_new),
+                  onPressed: (){
+                        signOut();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context){
+                              return JoinApp();
                             },
                           ),
-                          FlatButton.icon(
-                            color: Colors.green,
-                            label: Text('Refresh'),
-                            icon: Icon(Icons.refresh),
-                            onPressed: (){
-                             setState(() {
-
-                             });
-                            },
-                          )
-                        ],
-                      ),
-
-                    ],
-                  ),
-                  flex: 3,
+                        );
+                  },
                 ),
               ],
             ),
@@ -247,7 +193,7 @@ class _ProfileState extends State<Profile> {
             Padding(
               padding: EdgeInsets.all(5.0),
               child: Text(
-                "Account Information".toUpperCase(),
+                "Información de la cuenta".toUpperCase(),//Account Information
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -256,7 +202,7 @@ class _ProfileState extends State<Profile> {
             ),
             ListTile(
               title: Text(
-                "First Name",
+                "Nombre de pila",//First Name
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
@@ -282,7 +228,7 @@ class _ProfileState extends State<Profile> {
             ),
             ListTile(
               title: Text(
-                "Last Name",
+                "Apellido",//Last Name
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
@@ -297,8 +243,12 @@ class _ProfileState extends State<Profile> {
                   Icons.edit,
                   size: 20.0,
                 ),
-                onPressed: (){
-                  alertDialogEditLastName(context);
+                onPressed: ()async{
+                 await alertDialogEditLastName(context);
+
+                  setState(() {
+
+                  });
                 },
                 tooltip: "Edit",
               ),
@@ -325,7 +275,7 @@ class _ProfileState extends State<Profile> {
 
             ListTile(
               title: Text(
-                "Phone",
+                "teléfono",
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
@@ -341,16 +291,20 @@ class _ProfileState extends State<Profile> {
                   Icons.edit,
                   size: 20.0,
                 ),
-                onPressed: (){
-                  alertDialogEditPhoneNumber(context);
-                },
+                onPressed: ()async{
+                 await alertDialogEditPhoneNumber(context);
+
+                  setState(() {
+
+                  });
+                  },
                 tooltip: "Edit",
               ),
             ),
 
             ListTile(
               title: Text(
-                "Address",
+                "la dirección",
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
@@ -365,8 +319,12 @@ class _ProfileState extends State<Profile> {
                   Icons.edit,
                   size: 20.0,
                 ),
-                onPressed: (){
-                  alertDialogEditAddress(context);
+                onPressed: ()async{
+                 await alertDialogEditAddress(context);
+
+                  setState(() {
+
+                  });
                 },
                 tooltip: "Edit",
               ),
@@ -411,23 +369,23 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Edit First Name'),
+            title: Text('Editar nombre'),// Edit First Name
             content: TextField(
               controller: _textFieldController,
               textInputAction: TextInputAction.go,
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(hintText: "Enter New First Name"),
+              decoration: InputDecoration(hintText: "Ingrese nuevo nombre"),//Enter New First Name
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'),
+                child: new Text('Cancelar'),//Cancel
                 onPressed: () {
                   Navigator.of(context).pop();
                   },
               ),
               new FlatButton(
-                child: new Text('Submit'),
+                child: new Text('Enviar'),//Submit
                 onPressed: () {
                   firestoreInstance
                       .collection("users")
@@ -454,23 +412,23 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Edit Last Name'),
+            title: Text('Editar apellido'),//Edit Last Name
             content: TextField(
               controller: _textFieldController,
               textInputAction: TextInputAction.go,
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(hintText: "Enter New Last Name"),
+              decoration: InputDecoration(hintText: "Ingrese nuevo apellido"),//Enter New Last Name
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'),
+                child: new Text('Cancelar'),//Cancel
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('Submit'),
+                child: new Text('Enviar'),//Submit
                 onPressed: () {
                   firestoreInstance
                       .collection("users")
@@ -497,23 +455,23 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Edit Phone Number'),
+            title: Text('Editar número de teléfono'),//Edit Phone Number
             content: TextField(
               controller: _textFieldController,
               textInputAction: TextInputAction.go,
               keyboardType: TextInputType.number,
 
-              decoration: InputDecoration(hintText: "Enter New Phone Number"),
+              decoration: InputDecoration(hintText: "Ingrese nuevo número de teléfono"),//Enter New Phone Number
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'),
+                child: new Text('Cancelar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('Submit'),
+                child: new Text('Enviar'),
                 onPressed: () {
                   firestoreInstance
                       .collection("users")
@@ -540,24 +498,24 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Edit Address'),
+            title: Text('Editar dirección'),//Edit Address
             content: TextField(
               maxLines: 3,
               controller: _textFieldController,
               textInputAction: TextInputAction.go,
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(hintText: "Enter New Address"),
+              decoration: InputDecoration(hintText: "Ingrese nueva dirección"),
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'),
+                child: new Text('Cancelar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('Submit'),
+                child: new Text('Enviar'),
                 onPressed: () {
                   firestoreInstance
                       .collection("users")

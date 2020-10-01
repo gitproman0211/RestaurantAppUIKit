@@ -65,7 +65,7 @@ class _UploaderState extends State<Uploader> {
                 if (_uploadTask.isComplete)
                   FlatButton.icon(
                     color: Colors.green,
-                    label: Text('Back to Profile Page'),
+                    label: Text('Volver a la página de perfil'),//Back to Profile Page
                     icon: Icon(Icons.person),
                     onPressed: (){
                       changeProfilePicture();
@@ -105,7 +105,7 @@ class _UploaderState extends State<Uploader> {
       // Allows user to decide when to start the upload
       return FlatButton.icon(
         color: Colors.red,
-        label: Text('Upload Picture to Database'),
+        label: Text('Subir imagen a la base de datos'),//Upload Picture to Database
         icon: Icon(Icons.cloud_upload),
         onPressed: _startUpload,
       );

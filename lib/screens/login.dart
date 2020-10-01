@@ -12,6 +12,8 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 
 
+
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -55,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
               top: 25.0,
             ),
             child: Text(
-              "Log in to your account",
+              "iniciar sesión en tu cuenta",//Log in to your account
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w700,
@@ -131,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderSide: BorderSide(color: Colors.white,),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "Password",
+                  hintText: "contraseña",//"""Password",
                   prefixIcon: Icon(
                     Icons.lock_outline,
                     color: Colors.black,
@@ -154,7 +156,8 @@ class _LoginScreenState extends State<LoginScreen> {
             alignment: Alignment.centerRight,
             child: FlatButton(
               child: Text(
-                "Forgot Password?",
+                "¿Olvidó contraseña?",
+                // "Forgot Password?",
                 style: TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w500,
@@ -189,12 +192,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         .authStateChanges()
                         .listen((User user) {
                       if (user == null) {
-                        print('User is currently signed out!');
+
+                         print('User is currently signed out!');
                       }
                       if (!user.emailVerified) {
                         alertDialogCheckEmail(context);
                       }else {
-                        print('User is signed in!');
+
+                         print('User is signed in!');
 
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -276,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
 alertDialogUserDoesNotExist(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
-    child: Text("Retry"),
+    child: Text("reintentar"),//Retry
     onPressed: () {
       Navigator.of(context).pop();
       },
@@ -287,7 +292,7 @@ alertDialogUserDoesNotExist(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text("Error"),
-        content: Text("Invalid Login Please Register!!"),
+        content: Text("Inicio de sesión no válido Por favor regístrese!!"),//Invalid login please register
         actions: [
           ok,
         ],
@@ -299,7 +304,7 @@ alertDialogUserDoesNotExist(BuildContext context) {
 alertDialogWrongPassword(BuildContext context) {
   // This is the ok button
   Widget ok = FlatButton(
-    child: Text("Retry"),
+    child: Text("reintentar"),//Retry
     onPressed: () {
       Navigator.of(context).pop();
       },
@@ -310,7 +315,7 @@ alertDialogWrongPassword(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text("Error"),
-        content: Text("Incorrect Password"),
+        content: Text("contraseña incorrecta"),//Incorrect Password
         actions: [
           ok,
         ],
@@ -326,7 +331,7 @@ alertDialogForgotPassword(BuildContext context) async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('What is your email?'),
+          title: Text('¿Cuál es tu email?'),//What is your email?
           content: TextField(
             controller: _textFieldController,
             textInputAction: TextInputAction.go,
@@ -335,13 +340,13 @@ alertDialogForgotPassword(BuildContext context) async {
           ),
           actions: <Widget>[
             new FlatButton(
-              child: new Text('Cancel'),
+              child: new Text('cancelar'),//Cancel
               onPressed: () async{
                 Navigator.of(context).pop();
               },
             ),
             new FlatButton(
-              child: new Text('Submit'),
+              child: new Text('presentarse'),//Submit
               onPressed: () async{
                 await FirebaseAuth.instance.sendPasswordResetEmail(email: _textFieldController.text);
                 Navigator.of(context).pop();

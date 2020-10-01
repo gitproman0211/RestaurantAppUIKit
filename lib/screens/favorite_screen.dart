@@ -11,74 +11,80 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAliveClientMixin<FavoriteScreen>{
-  List<dynamic> order=[];
-  List<Map>favorites=[];
-  final List<Map> foods=[];
+  List<String>favorites=[];
+  List<Map>menu=[];
+  List<Map> favoriteFoods=[];
   final firestoreInstance = FirebaseFirestore.instance;
+  User user = FirebaseAuth.instance.currentUser;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  bool isLoading;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getFavouritesFromFirebase();
+     getFavoriteFoodsFromOrders();
+     getMenu();
 
   }
-
-  getFavouritesFromFirebase()async{
+  getMenu() {
+    menu=[];
     firestoreInstance.collection("menu").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
-        print(result.data());
-        foods.add(result.data());
+        menu.add(result.data());
       }
       );
+      for(int i=0;i<menu.length;i++){
+        if(favorites.contains(menu[i]["name"])){
+          favoriteFoods.add(menu[i]);
+        }
+      }
+      print("printing favorite foods Map");
+      print(favoriteFoods.length);
+      print(favoriteFoods);
+      isLoading=false;
+      setState(() {
+
+      });
     }
     );
-    User user = FirebaseAuth.instance.currentUser;
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('users').doc(user.uid).collection('orders').get();
-    for (int i = 0; i < querySnapshot.docs.length; i++) {
-      var a = querySnapshot.docs[i].get("order");
-      // print(a);
-      order.add(a);
-    }
-    // print("Printing order");
-    // print(order);
-    print("order length=${order.length}");
-    List<dynamic>pastOrders=[];
-    for(var i=0;i<order.length;i++){
-      // print("order[i] length=${order[i].length}");
-      for(var j=0;j<order[i].length;j++){
-        if(!pastOrders.contains(order[i][j])){
-          pastOrders.add(order[i][j]);
-        }
 
-      }
-    }
-    print("Printing past orders");
-    print(pastOrders);
-    for(var i=0;i<pastOrders.length;i++){
-      for(var j=0;j<foods.length;j++){
-        if(foods[j]["name"]==pastOrders[i]){
-          favorites.add(foods[j]);
-        }
-      }
-    }
-     print("Printing Favorites");
-     print(favorites.length);
-    // print(favorites);
-    setState(() {
-
-    });
   }
+  getFavoriteFoodsFromOrders() async{
+    isLoading=true;
+    var ordersRef = FirebaseFirestore.instance.collection("orders");
+    var query = await ordersRef.where("userId", isEqualTo: user.uid).get();
+    var orderSnapShotList = query.docs;
+    print("order snapshotlist");
+    print(orderSnapShotList);
+    for (int i = 0; i < orderSnapShotList.length; i++) {
+      Map temp = orderSnapShotList[i].data();
+      for(int i=0;i<temp["order"].length;i++){
+        favorites.add(temp["order"][i]["name"]);
+      }
+    }
+    favorites=favorites.toSet().toList();
+    print("Printing Favorite Strings");
+    print(favorites);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: Padding(
+      body:isLoading
+          ? Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.cyan,
+          strokeWidth: 5,
+        ),
+      )
+          :  Padding(
         padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
         child: ListView(
           children: <Widget>[
             SizedBox(height: 10.0),
             Text(
-              "My Favorite Items",
+              "Mis artículos favoritos",//My Favorite Items
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.w800,
@@ -87,7 +93,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
             SizedBox(height: 10.0),
 
             favorites.length==0? Text(
-              "No Favourites Yet!!",
+              "No hay favoritos todavía !!",//No Favourites Yet!!
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -103,9 +109,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> with AutomaticKeepAlive
                 childAspectRatio: MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height / 1.25),
               ),
-              itemCount: favorites == null ? 0 :favorites.length,
+              itemCount: favoriteFoods.length == 0 ? 0 :favoriteFoods.length,
               itemBuilder: (BuildContext context, int index) {
-                Map food = favorites[index];
+                Map food = favoriteFoods[index];
                 return GridProduct(
                   food: food,
                   img: food['image'],

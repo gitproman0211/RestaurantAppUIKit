@@ -53,7 +53,7 @@ class _DishesScreenState extends State<DishesScreen> {
         ),
         centerTitle: true,
         title: Text(
-          "Dishes",
+          "Platos",//Dishes
         ),
         elevation: 0.0,
         actions: <Widget>[

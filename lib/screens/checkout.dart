@@ -85,10 +85,12 @@ class _CheckoutState extends State<Checkout> {
     });
     String orderId=documentReference.id;
     print("Order $orderId uploaded to firebase");
+    widget.cartModel.cart=[];
+    alertDialogPlaceOrder(context);
   }
-  updatePointsToFirebase(){
+  updatePointsToFirebase()async{
     User user = FirebaseAuth.instance.currentUser;
-    firestoreInstance.collection("users").doc(user.uid).update({"points":widget.cartModel.points+widget.total~/10});
+    await firestoreInstance.collection("users").doc(user.uid).update({"points":widget.cartModel.points+widget.total~/10});
   }
 
   @override
@@ -144,7 +146,7 @@ class _CheckoutState extends State<Checkout> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Delivery Address",
+                  "Dirección de entrega",//Delivery Address
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w800,
@@ -177,7 +179,7 @@ class _CheckoutState extends State<Checkout> {
             ),
             SizedBox(height: 10.0),
             Text(
-              "Restaurant Address",
+              "Dirección del restaurante",//Restaurant Address
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w800,
@@ -198,7 +200,7 @@ class _CheckoutState extends State<Checkout> {
               ),
             ),
             Text(
-              "Payment Method",
+              "Método de pago",//Payment Method
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w800,
@@ -234,61 +236,51 @@ class _CheckoutState extends State<Checkout> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
 
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10,5,5,5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Total=${widget.total}",
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        "Delivery charges = \$+$deliveryCharge",
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        "TOTAL BILL AMOUNT = \$${widget.total+deliveryCharge}",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Container(
-                  padding: EdgeInsets.fromLTRB(5,5,10,5),
-                  width: 150.0,
-                  height: 50.0,
-                  child: FlatButton(
-                    color: Theme.of(context).accentColor,
-                    child: Text(
-                      "Place Order".toUpperCase(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Total=${widget.total}",
                       style: TextStyle(
-                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    onPressed: (){
-                        if(address.length!=0){
-                          uploadOrderToDatabase();
-                          updatePointsToFirebase();
-                          widget.cartModel.cart=[];
-                          alertDialogPlaceOrder(context);
-                        }
-                        else{
-                          alertDialogEnterAddress(context);
-                        }
+                    Text(
+                      "Los gastos de envío = \$+$deliveryCharge",
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      "CANTIDAD TOTAL DE LA FACTURA = \$${widget.total+deliveryCharge}",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
 
-                    },
+                FlatButton(
+                  color: Theme.of(context).accentColor,
+                  child: Text(
+                    "Realizar pedido".toUpperCase(),//Place Order
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
+                  onPressed: ()async{
+                      if(address.length!=0){
+                       await uploadOrderToDatabase();
+                       await updatePointsToFirebase();
+                      }
+                      else{
+                        alertDialogEnterAddress(context);
+                      }
+
+                  },
                 ),
 
               ],
@@ -319,7 +311,7 @@ class _CheckoutState extends State<Checkout> {
       builder: (BuildContext context) {
         return AlertDialog(
 
-          content: Text("ORDER PLACED SUCCESSFULLY"),
+          content: Text("PEDIDO REALIZADO CON ÉXITO"),//ORDER PLACED SUCCESSFULLY
           actions: [
             ok,
           ],
@@ -336,24 +328,24 @@ class _CheckoutState extends State<Checkout> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Edit Address'),
+            title: Text('Editar dirección'),//Edit Address
             content: TextField(
               maxLines: 3,
               controller: _textFieldController,
               textInputAction: TextInputAction.go,
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(hintText: "Enter New Address"),
+              decoration: InputDecoration(hintText: "Ingrese nueva dirección"),//Enter New Address
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'),
+                child: new Text('Cancelar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('Submit'),
+                child: new Text('Enviar'),
                 onPressed: () {
                   firestoreInstance
                       .collection("users")
@@ -380,24 +372,24 @@ class _CheckoutState extends State<Checkout> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Shipping Address cannot be Empty'),
+            title: Text('La dirección de entrega no puede estar vacía'),//Shipping Address cannot be Empty
             content: TextField(
               maxLines: 3,
               controller: _textFieldController,
               textInputAction: TextInputAction.go,
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(hintText: "Enter Address"),
+              decoration: InputDecoration(hintText: "Ingresa la direccion"),//Enter Address
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text('Cancel'),
+                child: new Text('Cancelar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: new Text('Submit'),
+                child: new Text('Enviar'),//Submit
                 onPressed: () {
                   firestoreInstance
                       .collection("users")
