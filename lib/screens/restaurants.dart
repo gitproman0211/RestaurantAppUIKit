@@ -78,7 +78,7 @@ class _RestaurantsState extends State<Restaurants> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.red[100],
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -123,6 +123,20 @@ class _RestaurantsState extends State<Restaurants> {
       ),
       body: Column(
         children: <Widget>[
+          Card(
+            color: Colors.red,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "pulsación larga para seleccionar restaurante",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+                maxLines: 2,
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: restaurantsList.length,
@@ -140,37 +154,48 @@ class _RestaurantsState extends State<Restaurants> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
-                      color: selected[index]? Colors.blue[400] : Colors.white,
+                      color: selected[index]? Colors.red[500] : Colors.white,
                       margin: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            restaurantsList[index]["name"],
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              restaurantsList[index]["name"],
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              maxLines: 2,
                             ),
-                            maxLines: 2,
-                          ),
-                          SizedBox(height: 10.0),
-                          Text(
-                            "Dirección de restaurantes",//Restaurant Address
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w300,
+                            SizedBox(height: 10.0),
+                            Text(
+                              "Dirección de restaurantes",//Restaurant Address
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              maxLines: 2,
                             ),
-                            maxLines: 2,
-                          ),
-                          SizedBox(height: 10.0),
-                          Text(
-                            restaurantsList[index]["address"],
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
+                            SizedBox(height: 10.0),
+                            Text(
+                              restaurantsList[index]["address"],
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
-                          ),
+                            SizedBox(height: 10.0),
+                            Text(
+                              restaurantsList[index]["phoneNumber"],
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
 
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

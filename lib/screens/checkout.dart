@@ -24,6 +24,7 @@ class _CheckoutState extends State<Checkout> {
   String firstName="";
   String lastName="";
   String address="";
+  String phoneNumber="";
   User user = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
 
@@ -50,16 +51,17 @@ class _CheckoutState extends State<Checkout> {
   @override
   void initState() {
     super.initState();
-    getNameAddress();
+    getUserDetails();
 
   }
 
-  getNameAddress()async {
+  getUserDetails()async {
     DocumentSnapshot doc= await firestoreInstance.collection("users")
         .doc(user.uid).get();
     firstName=doc.data()["firstName"];
     lastName=doc.data()["lastName"];
     address=doc.data()["address"];
+    phoneNumber=doc.data()["phoneNumber"];
     setState(() {
 
     });
@@ -82,6 +84,10 @@ class _CheckoutState extends State<Checkout> {
       "status":"placed",
       "orderId":documentReference.id,
       "timestamp":DateTime.now().toIso8601String(),
+      "firstName":firstName,
+      "lastName":lastName,
+      "phoneNumber":phoneNumber,
+      "address":address
     });
     String orderId=documentReference.id;
     print("Order $orderId uploaded to firebase");
@@ -90,7 +96,7 @@ class _CheckoutState extends State<Checkout> {
   }
   updatePointsToFirebase()async{
     User user = FirebaseAuth.instance.currentUser;
-    await firestoreInstance.collection("users").doc(user.uid).update({"points":widget.cartModel.points+widget.total~/10});
+    await firestoreInstance.collection("users").doc(user.uid).update({"points":widget.cartModel.points+widget.total~/10000});
   }
 
   @override
@@ -119,28 +125,19 @@ class _CheckoutState extends State<Checkout> {
       ),
 
       body: Padding(
-        padding: EdgeInsets.fromLTRB(10.0,0,10.0,130),
+        padding: EdgeInsets.fromLTRB(10.0,0,10.0,0),
         child: ListView(
           children: <Widget>[
             ListTile(
               title: Text(
-                "NAME",
+                "NAME: "+firstName+" "+lastName,
                 style: TextStyle(
-//                    fontSize: 15,
+                    fontSize: 15,
                   fontWeight: FontWeight.w900,
                 ),
               ),
             ),
-            SizedBox(height: 10.0),
-            ListTile(
-              title: Text(
-                firstName+" "+lastName,
-                style: TextStyle(
-//                    fontSize: 15,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
+
             SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,7 +153,7 @@ class _CheckoutState extends State<Checkout> {
                 IconButton(
                   onPressed: ()async{
                     await alertDialogEditAddress(context);
-                    getNameAddress();
+                    getUserDetails();
                     setState(() {
 
                     });
@@ -177,6 +174,44 @@ class _CheckoutState extends State<Checkout> {
                 ),
               ),
             ),
+            SizedBox(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "teléfono",//Delivery Address
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+
+                IconButton(
+                  onPressed: ()async{
+                    await alertDialogEditPhoneNumber(context);
+                    getUserDetails();
+                    setState(() {
+
+                    });
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10.0),
+            ListTile(
+              title: Text(
+                phoneNumber,
+                style: TextStyle(
+//                    fontSize: 15,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+
+
             SizedBox(height: 10.0),
             Text(
               "Dirección del restaurante",//Restaurant Address
@@ -240,48 +275,50 @@ class _CheckoutState extends State<Checkout> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Total=${widget.total}",
+                      "Total= ₲ ${widget.total}",
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 15,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
-                      "Los gastos de envío = ₲ +$deliveryCharge",
+                      "Los gastos de envío = ₲ $deliveryCharge",
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 15,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
-                      "CANTIDAD TOTAL DE LA FACTURA = ₲+${widget.total+deliveryCharge}",
+                      "CANTIDAD TOTAL DE LA FACTURA = ₲ ${widget.total+deliveryCharge}",
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
+                    FlatButton(
+
+                      color: Theme.of(context).accentColor,
+                      child: Text(
+                        "Realizar pedido".toUpperCase(),//Place Order
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: ()async{
+                        if(address.length!=0 && phoneNumber.length!=0){
+                          await uploadOrderToDatabase();
+                          await updatePointsToFirebase();
+                        }
+                        else{
+                          alertDialogEnterAddressPhoneNumber(context);
+                        }
+
+                      },
+                    ),
                   ],
                 ),
 
-                FlatButton(
-                  color: Theme.of(context).accentColor,
-                  child: Text(
-                    "Realizar pedido".toUpperCase(),//Place Order
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: ()async{
-                      if(address.length!=0){
-                       await uploadOrderToDatabase();
-                       await updatePointsToFirebase();
-                      }
-                      else{
-                        alertDialogEnterAddress(context);
-                      }
 
-                  },
-                ),
 
               ],
             ),
@@ -364,7 +401,7 @@ class _CheckoutState extends State<Checkout> {
           );
         });
   }
-  alertDialogEnterAddress(BuildContext context) async {
+  alertDialogEnterAddressPhoneNumber(BuildContext context) async {
     TextEditingController _textFieldController = TextEditingController();
     User user = FirebaseAuth.instance.currentUser;
     final firestoreInstance = FirebaseFirestore.instance;
@@ -372,14 +409,34 @@ class _CheckoutState extends State<Checkout> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('La dirección de entrega no puede estar vacía'),//Shipping Address cannot be Empty
+            title: Text('La dirección y el número de teléfono no pueden estar vacíos'),//Shipping Address and phone number cannot be Empty
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('OK'),//Submit
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  },
+              )
+            ],
+          );
+        });
+  }
+  alertDialogEditPhoneNumber(BuildContext context) async {
+    TextEditingController _textFieldController = TextEditingController();
+    User user = FirebaseAuth.instance.currentUser;
+    final firestoreInstance = FirebaseFirestore.instance;
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Editar teléfono'),//Edit Address
             content: TextField(
               maxLines: 3,
               controller: _textFieldController,
               textInputAction: TextInputAction.go,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(hintText: "Ingresa la direccion"),//Enter Address
+              decoration: InputDecoration(hintText: "Ingrese nueva teléfono"),//Enter New Address
             ),
             actions: <Widget>[
               new FlatButton(
@@ -389,13 +446,13 @@ class _CheckoutState extends State<Checkout> {
                 },
               ),
               new FlatButton(
-                child: new Text('Enviar'),//Submit
+                child: new Text('Enviar'),
                 onPressed: () {
                   firestoreInstance
                       .collection("users")
                       .doc(user.uid)
                       .update({
-                    "address": _textFieldController.text,
+                    "phoneNumber": _textFieldController.text,
                   }).then((value) {
                     print("Success");
                   });
@@ -408,4 +465,5 @@ class _CheckoutState extends State<Checkout> {
           );
         });
   }
+
 }
