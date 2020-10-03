@@ -43,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: Text(
-            Constants.appName,
+            "Buddy Paraguay",
           ),
           elevation: 0.0,
           actions: <Widget>[

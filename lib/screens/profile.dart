@@ -25,6 +25,7 @@ class _ProfileState extends State<Profile> {
   String phoneNumber="";
   String address="";
   String profilePicture="";
+  String points="";
   User user = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -47,7 +48,7 @@ class _ProfileState extends State<Profile> {
     phoneNumber=doc.data()["phoneNumber"];
     address=doc.data()["address"];
     profilePicture=doc.data()["profilePicture"];
-
+    points=doc.data()["points"].toString();
     setState(() {
 
     });
@@ -255,7 +256,7 @@ class _ProfileState extends State<Profile> {
             ),
             Container(
               decoration: new BoxDecoration (
-                  color: Colors.grey[100]
+                  color: Colors.red[300]
               ),
 
               child: ListTile(
@@ -272,7 +273,25 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
+            Container(
+              decoration: new BoxDecoration (
+                  color: Colors.red[300]
+              ),
 
+              child: ListTile(
+                title: Text(
+                  "Points",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+
+                subtitle: Text(
+                  points,
+                ),
+              ),
+            ),
             ListTile(
               title: Text(
                 "teléfono",

@@ -79,28 +79,15 @@ class _CartItemState extends State<CartItem> {
                 SizedBox(height: 10.0),
                 Row(
                   children: <Widget>[
-                    SmoothStarRating(
-                      starCount: 1,
-                      color: Constants.ratingBG,
-                      allowHalfRating: true,
-                      rating: 5.0,
-                      size: 12.0,
-                    ),
-
-                  ],
-                ),
-                SizedBox(height: 10.0),
-                Row(
-                  children: <Widget>[
                     Text(
-                      "Price : \$",
+                      widget.foodItem["redeem"]?"Points :":"Price : ₲ ",
                       style: TextStyle(
                         fontSize: 11.0,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
                     Text(
-                      "${widget.foodItem["price"]*widget.F.quantity}",
+                      widget.foodItem["redeem"]?"${widget.foodItem["points"]*widget.F.quantity}": "${widget.foodItem["price"]*widget.F.quantity}",
                       style: TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w900,

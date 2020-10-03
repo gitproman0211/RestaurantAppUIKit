@@ -128,7 +128,7 @@ class _CartScreenState extends State<CartScreen>
             ),
           ),
           Text(
-            "GRAN TOTAL= \$ ${calculateTotal()}",//GRAND TOTAL
+            "GRAN TOTAL= ₲  ${calculateTotal()}",//GRAND TOTAL
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w800,

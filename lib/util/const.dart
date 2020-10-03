@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 class Constants{
 
-  static String appName = "Restaurant App";
+  static String appName = "Buddy Paraguay";
 
   //Colors for theme
 //  Color(0xfffcfcff);
