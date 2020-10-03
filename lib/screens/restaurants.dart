@@ -9,6 +9,7 @@ import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Restaurants extends StatefulWidget {
   final int total;
@@ -32,6 +33,13 @@ class _RestaurantsState extends State<Restaurants> {
     // TODO: implement initState
     super.initState();
     getRestaurantList();
+  }
+  _launchURL(gmapLocation) async {
+    if (await canLaunch(gmapLocation)) {
+      await launch(gmapLocation);
+    } else {
+      throw 'Could not launch $gmapLocation';
+    }
   }
   getRestaurantList(){
     firestoreInstance.collection("restaurants").get().then((querySnapshot) {
@@ -185,13 +193,21 @@ class _RestaurantsState extends State<Restaurants> {
                                 fontWeight: FontWeight.w800,
                               ),
                             ),
-                            SizedBox(height: 10.0),
+
                             Text(
                               restaurantsList[index]["phoneNumber"],
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,
                               ),
+                            ),
+                            SizedBox(height: 10.0),
+                             IconButton(
+                               icon: Image.asset('assets/gmap.png'),
+                              tooltip: 'Closes application',
+                              onPressed: (){
+                                _launchURL(restaurantsList[index]["gmapLocation"]);
+                              },
                             ),
 
                           ],
