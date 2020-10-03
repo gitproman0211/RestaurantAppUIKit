@@ -130,7 +130,7 @@ class _CheckoutState extends State<Checkout> {
           children: <Widget>[
             ListTile(
               title: Text(
-                "NAME: "+firstName+" "+lastName,
+                firstName+" "+lastName,
                 style: TextStyle(
                     fontSize: 15,
                   fontWeight: FontWeight.w900,
@@ -282,14 +282,14 @@ class _CheckoutState extends State<Checkout> {
                       ),
                     ),
                     Text(
-                      "Los gastos de envío = ₲ $deliveryCharge",
+                      "Los gastos de envío = ₲ "+widget.selectedRestaurant["deliveryCharge"].toString(),
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
-                      "CANTIDAD TOTAL DE LA FACTURA = ₲ ${widget.total+deliveryCharge}",
+                      "CANTIDAD TOTAL DE LA FACTURA = ₲ ${widget.total+widget.selectedRestaurant["deliveryCharge"]}",
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
