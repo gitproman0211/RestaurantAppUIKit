@@ -282,7 +282,7 @@ class _CheckoutState extends State<Checkout> {
                       ),
                     ),
                     Text(
-                      "Los gastos de envío = ₲ "+widget.selectedRestaurant["deliveryCharge"].toString(),
+                      "Los gastos de envío = ₲ "+ widget.selectedRestaurant["deliveryCharge"].toString(),
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
