@@ -12,24 +12,19 @@ class _WalkthroughState extends State<Walkthrough> {
 
   List pageInfos = [
     {
-      "title": "Fresh Food",
-      "body": "Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus."
-          " Vestibulum ac diam sit amet quam vehicula elementum sed sit amet "
-          "dui. Nulla porttitor accumsan tincidunt.",
+      "title": "Buddy",
+      "body": "Tenemos como prioridad el llevar a tu mesa la comida más fresca, casera y hecha con mucho amor",
       "img": "assets/on1.png",
     },
     {
-      "title": "Fast Delivery",
-      "body": "Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus."
-          " Vestibulum ac diam sit amet quam vehicula elementum sed sit amet "
-          "dui. Nulla porttitor accumsan tincidunt.",
+      "title": "buddy para commnunidad",
+      "body": "Donación de insumos, colectas para recaudar, entrega de alimentos, plataformas de ayuda, colocación de comederos para animales de la calle www.younmin.com",
       "img": "assets/on2.png",
     },
     {
-      "title": "Easy Payment",
-      "body": "Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus."
-          " Vestibulum ac diam sit amet quam vehicula elementum sed sit amet "
-          "dui. Nulla porttitor accumsan tincidunt.",
+      "title": "buddy para medioambiente",
+      "body": "Reutilizamos aceite para la fabricacion de detergente con envases reciclados."
+      "\nEncontranos en:\n www.cadenasdefavores.com",
       "img": "assets/on3.png",
     },
   ];
