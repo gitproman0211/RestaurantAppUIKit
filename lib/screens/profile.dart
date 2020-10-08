@@ -6,6 +6,7 @@ import 'package:restaurant_ui_kit/providers/app_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:restaurant_ui_kit/screens/join.dart';
 import 'package:restaurant_ui_kit/screens/login.dart';
+import 'package:restaurant_ui_kit/screens/social_login.dart';
 import 'package:restaurant_ui_kit/screens/splash.dart';
 import 'package:restaurant_ui_kit/util/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -55,6 +56,8 @@ class _ProfileState extends State<Profile> {
   }
   signOut() async {
     await auth.signOut();
+    await signOutGoogle();
+    await facebookLogOut();
   }
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(

@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restaurant_ui_kit/screens/home.dart';
 import 'package:restaurant_ui_kit/screens/main_screen.dart';
 import 'package:restaurant_ui_kit/util/cartModel.dart';
-
+import 'package:http/http.dart';
 import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/cart_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,11 +27,15 @@ class _CheckoutState extends State<Checkout> {
   String phoneNumber="";
   User user = FirebaseAuth.instance.currentUser;
   final firestoreInstance = FirebaseFirestore.instance;
-
   int _radioValue = 0;
   int deliveryCharge=10;
   String paymentMode="CARD";
-  // int points=0;
+
+  String restaurant1="7JqUizFVXo0cfyxORyLr";
+  String restaurant2="7KWYsmiTVvme0l5nq535";
+  String restaurant3="f64jyVjSUoCFXBj3C7nv";
+  String restaurant4= "nyeDOMRL4N9RB9A2teER";
+  String restaurant5="zFuvsnmMq0meASJqKqmT";
 
 
   void _handleRadioValueChange(int value) {
@@ -91,8 +95,31 @@ class _CheckoutState extends State<Checkout> {
     });
     String orderId=documentReference.id;
     print("Order $orderId uploaded to firebase");
+    print("selected restaruant Id");
+    print(widget.selectedRestaurant["id"]);
     widget.cartModel.cart=[];
     alertDialogPlaceOrder(context);
+    if(widget.selectedRestaurant["id"]==restaurant1){
+      print("sending notifications to restaurant1");
+      get("https://us-central1-restaurantapp-65d0e.cloudfunctions.net/sendNotificationR1");// link for restaurant1
+    }
+    else if(widget.selectedRestaurant["id"]==restaurant3){
+      print("sending notifications to restaurant3");
+      get("https://us-central1-restaurantapp-65d0e.cloudfunctions.net/sendNotificationR3");// link for restaurant1
+    }
+    else if(widget.selectedRestaurant["id"]==restaurant4){
+      print("sending notifications to restaurant4");
+      get("https://us-central1-restaurantapp-65d0e.cloudfunctions.net/sendNotificationR4");// link for restaurant1
+    }
+   else  if(widget.selectedRestaurant["id"]==restaurant5){
+      print("sending notifications to restaurant5");
+      get("https://us-central1-restaurantapp-65d0e.cloudfunctions.net/sendNotificationR5");// link for restaurant1
+    }
+    else{
+      print("sending notifications to restaurant2");
+      get("https://us-central1-restaurantapp-65d0e.cloudfunctions.net/sendNotificationR2");// link for restaurant1
+    }
+
   }
   updatePointsToFirebase()async{
     User user = FirebaseAuth.instance.currentUser;

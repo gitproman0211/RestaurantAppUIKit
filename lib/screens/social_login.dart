@@ -8,10 +8,11 @@ import 'dart:convert';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
+FacebookLogin facebookLogin = FacebookLogin();
 final firestoreInstance = FirebaseFirestore.instance;
 
 void signInWithFacebook() async {
-  FacebookLogin facebookLogin = FacebookLogin();
+
   final result = await facebookLogin.logIn(["email"]);
   switch (result.status) {
     case FacebookLoginStatus.loggedIn:
@@ -76,6 +77,10 @@ void signInWithFacebook() async {
     // });
   }
 }
+Future<Null> facebookLogOut() async {
+  await facebookLogin.logOut();
+
+}
 
 Future<String> signInWithGoogle() async {
   await Firebase.initializeApp();
@@ -112,7 +117,7 @@ Future<String> signInWithGoogle() async {
                 "lastName": name[1],
                 "email": user.email,
                 "address": "",
-                "phoneNumber": "",
+                "phoneNumber": user.phoneNumber,
                 "points": 0,
                 "profilePicture": user.photoURL,
               }).then((value) {
