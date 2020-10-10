@@ -44,11 +44,11 @@ class _ProfileState extends State<Profile> {
     DocumentSnapshot doc= await firestoreInstance.collection("users")
         .doc(user.uid).get();
     email=doc.data()["email"];
-    firstName=doc.data()["firstName"];
-    lastName=doc.data()["lastName"];
-    phoneNumber=doc.data()["phoneNumber"];
-    address=doc.data()["address"];
-    profilePicture=doc.data()["profilePicture"];
+    firstName=doc.data()["firstName"]==null?"":doc.data()["firstName"];
+    lastName=doc.data()["lastName"]==null?"":doc.data()["lastName"];
+    phoneNumber=doc.data()["phoneNumber"]==null?"":doc.data()["phoneNumber"];
+    address=doc.data()["address"]==null?"":doc.data()["address"];
+    profilePicture=doc.data()["profilePicture"]==null?"":doc.data()["profilePicture"];
     points=doc.data()["points"].toString();
     setState(() {
 

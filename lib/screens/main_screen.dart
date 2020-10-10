@@ -15,7 +15,10 @@ import 'package:restaurant_ui_kit/util/foodsInCart.dart';
 import 'package:restaurant_ui_kit/widgets/badge.dart';
 import 'package:provider/provider.dart';
 
+
+
 class MainScreen extends StatefulWidget {
+
   MainScreen({Key key}) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -27,13 +30,24 @@ class _MainScreenState extends State<MainScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   PageController _pageController;
   int _page = 0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // uploadTokenToFirebase();
     _pageController = PageController();
   }
-
+ // uploadTokenToFirebase(){
+ //   firestoreInstance
+ //       .collection("users")
+ //       .doc(user.uid)
+ //       .update({
+ //     "token":widget.tokenId,
+ //   }).then((value) {
+ //     print("Successfully uploaded token to Firebase");
+ //   });
+ // }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

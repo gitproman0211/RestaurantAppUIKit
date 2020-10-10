@@ -9,6 +9,8 @@ import 'register.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'social_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:io';
 
 
 
@@ -26,9 +28,47 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = new TextEditingController();
   String firstName="";
   dynamic data;
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String tokenId="";
 
-  void googleLogIn() {
-    signInWithGoogle().then((result) {
+
+  void firebaseCloudMessaging_Listeners() {
+    if (Platform.isIOS) iOS_Permission();
+
+    _firebaseMessaging.getToken().then((token){
+      print("printing token");
+      print(token);
+      tokenId=token;
+
+
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+
+  void iOS_Permission() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true)
+    );
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings)
+    {
+      print("Settings registered: $settings");
+    });
+  }
+
+  void googleLogIn(String tokenId) {
+    signInWithGoogle(tokenId).then((result) {
       if (result != null) {
         print("google sign in details");
         print(result);
@@ -42,7 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     });
   }
-
+  @override
+  void initState() {
+    super.initState();
+    firebaseCloudMessaging_Listeners();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -231,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: <Widget>[
                   RawMaterialButton(
                     onPressed: (){
-                      signInWithFacebook();
+                      signInWithFacebook(tokenId);
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (BuildContext context){
@@ -255,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   RawMaterialButton(
                     onPressed: (){
-                      googleLogIn();
+                      googleLogIn(tokenId);
                     },
                     fillColor: Colors.white,
                     shape: CircleBorder(),

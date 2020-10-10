@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:restaurant_ui_kit/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:io';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -20,6 +22,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _repasswordController =
       new TextEditingController();
   final firestoreInstance = FirebaseFirestore.instance;
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String tokenId="";
   clearFormFields(){
     _firstNameController.clear();
     _lastNameController.clear();
@@ -29,6 +33,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // setState(() {
     //
     // });
+  }
+  void firebaseCloudMessaging_Listeners() {
+    if (Platform.isIOS) iOS_Permission();
+
+    _firebaseMessaging.getToken().then((token){
+      print("printing token");
+      print(token);
+      tokenId=token;
+    });
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+
+  void iOS_Permission() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true)
+    );
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings)
+    {
+      print("Settings registered: $settings");
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    firebaseCloudMessaging_Listeners();
   }
   @override
   Widget build(BuildContext context) {
@@ -311,8 +351,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "phoneNumber": "",
                       "points":0,
                       "profilePicture":"",
+                      "token":tokenId
                     }).then((value) {
-                      print("Success");
+                      print("Successfully uploaded details to Firebase");
                     });
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {

@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
+
 class Checkout extends StatefulWidget {
   final int total;
   final List<FoodInCart> myList;
@@ -38,6 +39,7 @@ class _CheckoutState extends State<Checkout> {
   String restaurant5="zFuvsnmMq0meASJqKqmT";
 
 
+
   void _handleRadioValueChange(int value) {
     setState(() {
       _radioValue = value;
@@ -55,6 +57,7 @@ class _CheckoutState extends State<Checkout> {
   @override
   void initState() {
     super.initState();
+
     getUserDetails();
 
   }
@@ -62,10 +65,10 @@ class _CheckoutState extends State<Checkout> {
   getUserDetails()async {
     DocumentSnapshot doc= await firestoreInstance.collection("users")
         .doc(user.uid).get();
-    firstName=doc.data()["firstName"];
-    lastName=doc.data()["lastName"];
-    address=doc.data()["address"];
-    phoneNumber=doc.data()["phoneNumber"];
+    firstName=doc.data()["firstName"]==null?"":doc.data()["firstName"];
+    lastName=doc.data()["lastName"]==null?"":doc.data()["lastName"];
+    address=doc.data()["address"]==null?"":doc.data()["address"];
+    phoneNumber=doc.data()["phoneNumber"]==null?"":doc.data()["phoneNumber"];
     setState(() {
 
     });

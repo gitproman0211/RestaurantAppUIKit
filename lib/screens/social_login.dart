@@ -11,7 +11,7 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 FacebookLogin facebookLogin = FacebookLogin();
 final firestoreInstance = FirebaseFirestore.instance;
 
-void signInWithFacebook() async {
+void signInWithFacebook(String tokenId) async {
 
   final result = await facebookLogin.logIn(["email"]);
   switch (result.status) {
@@ -49,8 +49,8 @@ void signInWithFacebook() async {
     DocumentReference usersRef =
     firestoreInstance.collection("users").doc(user.uid);
     usersRef.get().then((docSnapshot) => {
-      if (!docSnapshot.exists)
-        {
+      // if (!docSnapshot.exists)
+      //   {
           usersRef.set({
             "firstName": profile["first_name"],
             "lastName": profile["last_name"],
@@ -59,10 +59,11 @@ void signInWithFacebook() async {
             "phoneNumber": "",
             "points": 0,
             "profilePicture": user.photoURL,
+            "token":tokenId
           }).then((value) {
             print("Successfully uploaded User details to Firebase");
           })
-        }
+        // }
     });
     // firestoreInstance.collection("users").doc(user.uid).set({
     //   "firstName": profile["first_name"],
@@ -82,7 +83,7 @@ Future<Null> facebookLogOut() async {
 
 }
 
-Future<String> signInWithGoogle() async {
+Future<String> signInWithGoogle(String tokenId) async {
   await Firebase.initializeApp();
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
@@ -120,6 +121,7 @@ Future<String> signInWithGoogle() async {
                 "phoneNumber": user.phoneNumber,
                 "points": 0,
                 "profilePicture": user.photoURL,
+                "token":tokenId
               }).then((value) {
                 print("Successfully uploaded User details to Firebase");
               })

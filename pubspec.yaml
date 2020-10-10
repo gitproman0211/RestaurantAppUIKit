@@ -39,6 +39,7 @@ dependencies:
   flutter_facebook_login: ^3.0.0
   http: ^0.12.2
   url_launcher: ^5.7.2
+  firebase_messaging: ^7.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
