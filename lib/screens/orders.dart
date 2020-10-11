@@ -118,8 +118,10 @@ class _OrdersState extends State<Orders> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: <Widget>[
-                      Text("Nombre del restaurante:"+restaurantMap[orders[index]["restaurantId"]],
-                          style: TextStyle(color: Colors.black)),
+                      Text("Nombre del restaurante",
+                          style: TextStyle(color: Colors.red)),
+                      Text(restaurantMap[orders[index]["restaurantId"]],
+                          style: TextStyle(color: Colors.green)),
                       Column(
                         children: List.generate(orders[index]["order"].length, (i) {
                           return Container(
