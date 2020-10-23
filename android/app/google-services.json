@@ -8,12 +8,49 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:222879093299:android:6f2eec79002de7f3538946",
+        "mobilesdk_app_id": "1:222879093299:android:22104e5fcf66b7ea538946",
         "android_client_info": {
-          "package_name": "com.company.restaurantapp"
+          "package_name": "com.company.restaurantsideapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "222879093299-o73tqsjirdcfdmujk8isi03kj268f47p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4GoiemvNKJvp_yHHwLxLiydumKdpGj-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222879093299-o73tqsjirdcfdmujk8isi03kj268f47p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222879093299:android:2e80f1e6f71c6c27538946",
+        "android_client_info": {
+          "package_name": "com.younmin.buddy_paraguay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222879093299-njvu1ei6vi2q0rl7cbjk7nd82v9gkpou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.younmin.buddy_paraguay",
+            "certificate_hash": "4c2c1c4c48862b9e9d532748118436a085fb52eb"
+          }
+        },
         {
           "client_id": "222879093299-o73tqsjirdcfdmujk8isi03kj268f47p.apps.googleusercontent.com",
           "client_type": 3

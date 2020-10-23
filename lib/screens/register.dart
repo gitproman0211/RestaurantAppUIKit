@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(
-              top: 25.0,
+              top: 10.0,
             ),
             child: Text(
               "Crea Una Cuenta",
@@ -92,7 +92,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-          SizedBox(height: 30.0),
           SizedBox(height: 10.0),
           Card(
             elevation: 3.0,

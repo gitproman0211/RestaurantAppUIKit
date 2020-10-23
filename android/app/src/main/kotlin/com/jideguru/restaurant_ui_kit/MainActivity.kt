@@ -1,4 +1,4 @@
-package com.jideguru.restaurant_ui_kit
+package com.younmin.buddy_paraguay
 
 import android.os.Bundle
 
